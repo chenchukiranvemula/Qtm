@@ -483,20 +483,33 @@ if (unlockBtn) {
                 passwordScreen.style.display = "none";
                 document.getElementById("welcome").style.display = "flex";
             }, 800);
-        } else {
-    errorMsg.style.color = "#ff6b6b";
-    errorMsg.textContent = "Hmm... that's not the day my world changed ❤️ Try again my love";
-    passwordInput.value = "";
-    
-    // Gentle shake animation
-    const box = document.querySelector(".password-box");
-    box.style.transition = "transform 0.4s";
-    box.style.transform = "translateX(10px)";
-    setTimeout(() => box.style.transform = "translateX(-10px)", 100);
-    setTimeout(() => box.style.transform = "translateX(0)", 300);
+        else{
+
+errorMsg.innerHTML="Wrong Password ❤️";
+
+document.getElementById("roseHint").style.display="block";
+
+passwordInput.value="";
+
+const box=document.querySelector(".password-box");
+
+box.animate([
+
+{transform:"translateX(-12px)"},
+
+{transform:"translateX(12px)"},
+
+{transform:"translateX(-12px)"},
+
+{transform:"translateX(0)"}
+
+],{
+
+duration:500
+
+});
+
         }
-    });
-}
 // ===================== NIGHT ANIMATION =====================
 function createStars() {
     const container = document.createElement("div");
@@ -533,3 +546,40 @@ setInterval(createShootingStar, 1600);
 
 // Initialize everything
 createStars();
+        function createPetal(){
+
+const petal=document.createElement("div");
+
+petal.innerHTML="🌹";
+
+petal.style.position="fixed";
+
+petal.style.left=Math.random()*100+"vw";
+
+petal.style.top="-30px";
+
+petal.style.fontSize="24px";
+
+petal.style.pointerEvents="none";
+
+petal.style.zIndex="999999";
+
+document.body.appendChild(petal);
+
+petal.animate([
+
+{transform:"translateY(0) rotate(0deg)"},
+
+{transform:"translateY(110vh) rotate(360deg)"}
+
+],{
+
+duration:6000
+
+});
+
+setTimeout(()=>petal.remove(),6000);
+
+}
+
+setInterval(createPetal,900);
