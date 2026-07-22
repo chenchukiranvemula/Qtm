@@ -576,7 +576,7 @@ button:hover{
     display:flex;
     justify-content:center;
     align-items:center;
-    background:linear-gradient(180deg,#020611,#071733,#0a1f47);
+    background:linear-gradient(135deg,#fff6f8,#f8dfe8,#ececec);
     overflow:hidden;
     z-index:99999;
 }
