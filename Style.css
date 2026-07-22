@@ -50,6 +50,7 @@ body{
     position:relative;
 
     perspective:2000px;
+     overflow:hidden;
 
 }
 
@@ -81,20 +82,26 @@ body{
 
     overflow:hidden;
 
-    z-index:1;
+    z-index:20;
+
+    transform-origin:left center;
+
+    transition:2s ease;
 
 }
 .passwordPage{
+
     position:relative;
+
     z-index:10;
+
 }
+
+
+
 .book.open .book-cover{
 
     transform:rotateY(-160deg);
-
-    transform-origin:left;
-
-    transition:2s;
 
 }
 
