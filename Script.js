@@ -484,11 +484,17 @@ if (unlockBtn) {
                 document.getElementById("welcome").style.display = "flex";
             }, 800);
         } else {
-            errorMsg.textContent = "Wrong date... Try again my love ❤️";
-            passwordInput.value = "";
+    errorMsg.style.color = "#ff6b6b";
+    errorMsg.textContent = "Hmm... that's not the day my world changed ❤️ Try again my love";
+    passwordInput.value = "";
+    
+    // Gentle shake animation
+    const box = document.querySelector(".password-box");
+    box.style.transition = "transform 0.4s";
+    box.style.transform = "translateX(10px)";
+    setTimeout(() => box.style.transform = "translateX(-10px)", 100);
+    setTimeout(() => box.style.transform = "translateX(0)", 300);
         }
-    });
-}
 // ===================== NIGHT ANIMATION =====================
 function createStars() {
     const container = document.createElement("div");
