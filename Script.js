@@ -467,61 +467,98 @@ if (letter) {
 
 }
 // ===================== PASSWORD SYSTEM =====================
-const correctPassword ="03062025";   // ←←← CHANGE THIS LINE
+
+const correctPassword = "03062025";
 
 const passwordScreen = document.getElementById("passwordScreen");
+const loadingScreen = document.getElementById("loadingScreen");
+const welcomeScreen = document.getElementById("welcome");
+
 const unlockBtn = document.getElementById("unlockBtn");
 const passwordInput = document.getElementById("passwordInput");
 const errorMsg = document.getElementById("errorMsg");
 
-if (passwordInput.value === correctPassword) {
+if (unlockBtn) {
 
-    passwordScreen.classList.add("pageTurn");
+    unlockBtn.addEventListener("click", () => {
 
-    setTimeout(() => {
+        if (passwordInput.value === correctPassword) {
 
-        passwordScreen.style.display = "none";
+            passwordScreen.style.opacity = "0";
 
-        document.getElementById("loadingScreen").style.display = "flex";
+            setTimeout(() => {
 
-    },1200);
+                passwordScreen.style.display = "none";
 
-}
-setTimeout(() => {
+                loadingScreen.style.display = "flex";
 
-    const loading = document.getElementById("loadingScreen");
+                let progress = 0;
 
-    if (loading) {
+                const fill = document.getElementById("loadingFill");
+                const text = document.getElementById("loadingText");
 
-        loading.style.display = "none";
+                const messages = [
+                    "Opening our story...",
+                    "Collecting memories...",
+                    "Turning every page...",
+                    "Almost ready...",
+                    "Welcome Kodiguddu ❤️"
+                ];
 
-        document.getElementById("welcome").style.display = "flex";
+                const timer = setInterval(() => {
 
-    }
+                    progress += 20;
 
-},7000);
+                    if (fill) fill.style.width = progress + "%";
 
-} else {
+                    if (text) {
 
-    errorMsg.innerHTML="Wrong Password ❤️";
+                        text.innerHTML =
+                            messages[Math.min(progress / 20 - 1, messages.length - 1)];
 
-    document.getElementById("roseHint").style.display="block";
+                    }
 
-    passwordInput.value="";
+                    if (progress >= 100) {
 
-    const box=document.querySelector(".password-box");
+                        clearInterval(timer);
 
-    box.animate([
-        {transform:"translateX(-12px)"},
-        {transform:"translateX(12px)"},
-        {transform:"translateX(-12px)"},
-        {transform:"translateX(0)"}
-    ],{
-        duration:500
-    });
+                        loadingScreen.style.display = "none";
+
+                        welcomeScreen.style.display = "flex";
+
+                    }
+
+                }, 1400);
+
+            }, 800);
+
+        } else {
+
+            errorMsg.innerHTML = "Wrong Password ❤️";
+
+            document.getElementById("roseHint").style.display = "block";
+
+            passwordInput.value = "";
+
+            const box = document.querySelector(".password-box");
+
+            if (box) {
+
+                box.animate([
+                    { transform: "translateX(-10px)" },
+                    { transform: "translateX(10px)" },
+                    { transform: "translateX(-10px)" },
+                    { transform: "translateX(0)" }
+                ], {
+                    duration: 500
+                });
+
+            }
 
         }
-            });
+
+    });
+
 }
 // ===================== NIGHT ANIMATION =====================
 function createStars() {
