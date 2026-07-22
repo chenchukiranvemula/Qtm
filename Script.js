@@ -474,17 +474,32 @@ const unlockBtn = document.getElementById("unlockBtn");
 const passwordInput = document.getElementById("passwordInput");
 const errorMsg = document.getElementById("errorMsg");
 
-if (unlockBtn) {
-    unlockBtn.addEventListener("click", () => {
-        if (passwordInput.value === correctPassword) {
+if (passwordInput.value === correctPassword) {
 
-    passwordScreen.style.transition = "opacity 0.8s";
-    passwordScreen.style.opacity = "0";
+    passwordScreen.classList.add("pageTurn");
 
     setTimeout(() => {
+
         passwordScreen.style.display = "none";
+
+        document.getElementById("loadingScreen").style.display = "flex";
+
+    },1200);
+
+}
+setTimeout(() => {
+
+    const loading = document.getElementById("loadingScreen");
+
+    if (loading) {
+
+        loading.style.display = "none";
+
         document.getElementById("welcome").style.display = "flex";
-    },800);
+
+    }
+
+},7000);
 
 } else {
 
