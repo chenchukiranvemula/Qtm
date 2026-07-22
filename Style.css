@@ -787,9 +787,9 @@ transform:scale(1);
 
     letter-spacing:12px;
 
-    color:#020;
+    color:#000000;
 
-    opacity:0.25;
+    opacity:0.12;
 
     text-transform:uppercase;
 
@@ -799,3 +799,19 @@ transform:scale(1);
 
     white-space:nowrap;
         }
+/* Password screen text color fix */
+
+.password-box h1,
+.password-box p,
+.password-box label {
+    color:#000000 !important;
+}
+
+#passwordInput {
+    color:#000000 !important;
+    background:white;
+}
+
+#passwordInput::placeholder {
+    color:#555555 !important;
+   }
