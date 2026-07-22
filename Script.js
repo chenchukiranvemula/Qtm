@@ -1,635 +1,1599 @@
-// ======================================
-// PREMIUM BIRTHDAY WEBSITE V3
-// PART 1
-// ======================================
+/* ==================================================
+   PREMIUM BIRTHDAY BOOK WEBSITE V4
+   SCRIPT.JS
 
-// Elements
-const startBtn = document.getElementById("startBtn");
-const welcome = document.getElementById("welcome");
-const website = document.getElementById("website");
-const music = document.getElementById("bgMusic");
+   PART 1
+   3.1A - BOOK INITIALIZATION
+   3.1B - COVER OPENING
+   3.1C - PASSWORD SYSTEM
+   3.1D - LOADING SCREEN
+================================================== */
 
-const chapters = document.querySelectorAll(".chapter");
-const nextBtns = document.querySelectorAll(".nextBtn");
-const prevBtns = document.querySelectorAll(".prevBtn");
 
-let currentChapter = 0;
+/* ==============================
+   3.1A
+   GLOBAL VARIABLES
+============================== */
 
-// Hide all chapters
-function hideAllChapters() {
-    chapters.forEach(chapter => {
-        chapter.classList.remove("active");
-        chapter.style.display = "none";
-    });
-}
 
-// Show one chapter
-function showChapter(index) {
+const App = {
 
-    if (index < 0) index = 0;
-    if (index >= chapters.length) index = chapters.length - 1;
+    password : "03062025",
 
-    hideAllChapters();
+    currentPage : 0,
 
-    currentChapter = index;
+    bookOpened : false,
 
-    chapters[currentChapter].style.display = "flex";
+    unlocked : false,
 
-    setTimeout(() => {
-        chapters[currentChapter].classList.add("active");
-    }, 100);
+    loadingFinished : false
 
-    updateProgress();
-}
+};
 
-// Progress
-function updateProgress() {
 
-    const progress = document.getElementById("progress");
 
-    if (progress) {
-        progress.textContent = `Chapter ${currentChapter + 1} / ${chapters.length}`;
-    }
+const book =
+document.querySelector(".book");
 
-}
+const cover =
+document.querySelector(".book-cover");
 
-// Start Journey
-if (startBtn) {
+const passwordScreen =
+document.getElementById("passwordScreen");
 
-    startBtn.addEventListener("click", () => {
+const unlockBtn =
+document.getElementById("unlockBtn");
 
-        welcome.style.display = "none";
-        website.style.display = "block";
+const passwordInput =
+document.getElementById("passwordInput");
 
-        showChapter(0);
+const errorMsg =
+document.getElementById("errorMsg");
 
-        if (music) {
-            music.volume = 0.5;
 
-            music.play().catch(() => {});
-        }
 
-    });
+/* ==============================
+   3.1B
+   BOOK OPENING
+============================== */
 
-}
 
-// Next Buttons
-nextBtns.forEach(btn => {
+function openBook(){
 
-    btn.addEventListener("click", () => {
 
-        if (currentChapter < chapters.length - 1) {
+    if(App.bookOpened) return;
 
-            showChapter(currentChapter + 1);
 
-        }
+    App.bookOpened = true;
 
-    });
 
-});
+    if(book){
 
-// Previous Buttons
-prevBtns.forEach(btn => {
-
-    btn.addEventListener("click", () => {
-
-        if (currentChapter > 0) {
-
-            showChapter(currentChapter - 1);
-
-        }
-
-    });
-
-});
-
-// Keyboard Navigation
-document.addEventListener("keydown", e => {
-
-    if (e.key === "ArrowRight" && currentChapter < chapters.length - 1) {
-
-        showChapter(currentChapter + 1);
+        book.classList.add("open");
 
     }
 
-    if (e.key === "ArrowLeft" && currentChapter > 0) {
 
-        showChapter(currentChapter - 1);
+    console.log(
+    "📖 Book opening..."
+    );
 
-    }
 
-});
-// ======================================
-// Chapter 9 Special Song - FIXED
-// ======================================
-const musicBtn = document.getElementById("musicBtn");
-const bgMusic = document.getElementById("bgMusic");
-const chapter9Song = document.getElementById("chapter9Song"); // Correct ID
-
-if (musicBtn && chapter9Song) {
-    let isPlaying = false;
-
-    musicBtn.addEventListener("click", () => {
-        if (isPlaying) {
-            // Pause special song
-            chapter9Song.pause();
-            if (bgMusic) bgMusic.play().catch(() => {});
-            musicBtn.innerHTML = "▶ Play Song";
-            musicBtn.style.background = "";
-        } else {
-            // Pause background + play special song
-            if (bgMusic) bgMusic.pause();
-            chapter9Song.play().catch(err => {
-                console.error("Song playback failed:", err);
-                alert("Could not play song. Make sure Ammadu.mp3 is uploaded.");
-            });
-            musicBtn.innerHTML = "⏸ Pause Song";
-            musicBtn.style.background = "linear-gradient(45deg, #ff69b4, #ff1493)";
-        }
-        isPlaying = !isPlaying;
-    });
-
-    // Auto-pause when leaving Chapter 9
-    
-    const chapter9 = chapters[8]; // Chapter 9 (0-based)
-
-    if (chapter9) {
-        const observer = new MutationObserver(() => {
-            if (!chapter9.classList.contains("active")) {
-                chapter9Song.pause();
-                if (bgMusic) bgMusic.play().catch(() => {});
-                musicBtn.innerHTML = "▶ Play Song";
-                isPlaying = false;
-            }
-        });
-        observer.observe(chapter9, { 
-            attributes: true, 
-            attributeFilter: ["class"] 
-        });
-    }
-
-    // Bonus: Reset button when song ends
-    chapter9Song.addEventListener("ended", () => {
-        musicBtn.innerHTML = "▶ Play Song";
-        musicBtn.style.background = "";
-        isPlaying = false;
-        if (bgMusic) bgMusic.play().catch(() => {});
-    });
 }
-// ======================================
-// PREMIUM BIRTHDAY WEBSITE V3
-// PART 2
-// Hearts • Sparkles • Cake • Gifts • Photos
-// ======================================
 
-// Floating Hearts
-function createHeart() {
 
-    const heart = document.createElement("div");
 
-    heart.className = "heart";
-    heart.innerHTML = ["❤️","💕","💖","💗","💘"][Math.floor(Math.random()*5)];
+window.addEventListener("load",()=>{
 
-    heart.style.left = Math.random()*100 + "vw";
-    heart.style.fontSize = (20 + Math.random()*20) + "px";
-
-    document.body.appendChild(heart);
 
     setTimeout(()=>{
+
+        openBook();
+
+    },1000);
+
+
+});
+
+
+
+
+
+/* ==============================
+   3.1C
+   PASSWORD SYSTEM
+============================== */
+
+
+
+if(unlockBtn){
+
+
+unlockBtn.addEventListener("click",()=>{
+
+
+    let entered =
+    passwordInput.value.trim();
+
+
+
+    if(entered === App.password){
+
+
+        App.unlocked=true;
+
+
+        console.log(
+        "🔓 Password Correct"
+        );
+
+
+
+        passwordSuccess();
+
+
+
+    }
+
+    else{
+
+
+        if(errorMsg){
+
+            errorMsg.innerHTML =
+            "Wrong Password ❤️";
+
+        }
+
+
+
+        if(passwordInput){
+
+            passwordInput.value="";
+
+        }
+
+
+
+        shakePasswordBox();
+
+
+
+    }
+
+
+});
+
+
+}
+
+
+
+
+
+function shakePasswordBox(){
+
+
+    const box =
+    document.querySelector(".password-box");
+
+
+
+    if(box){
+
+
+        box.animate(
+
+        [
+
+        {
+        transform:"translateX(-15px)"
+        },
+
+        {
+        transform:"translateX(15px)"
+        },
+
+        {
+        transform:"translateX(-15px)"
+        },
+
+        {
+        transform:"translateX(0)"
+        }
+
+        ],
+
+        {
+
+        duration:500
+
+        });
+
+
+    }
+
+
+}
+
+
+
+
+
+function passwordSuccess(){
+
+
+    if(passwordScreen){
+
+
+        passwordScreen.classList.add(
+        "page-close"
+        );
+
+
+
+        setTimeout(()=>{
+
+
+            passwordScreen.style.display="none";
+
+
+            showLoading();
+
+
+
+        },1200);
+
+
+    }
+
+
+}
+
+
+
+
+
+
+
+/* ==============================
+   3.1D
+   LOADING SCREEN
+============================== */
+
+
+
+const loadingScreen =
+document.getElementById("loadingScreen");
+
+
+const loadingText =
+document.getElementById("loadingText");
+
+
+const loadingBar =
+document.getElementById("loadingFill");
+
+
+
+
+const loadingMessages=[
+
+
+"Opening your memories ❤️",
+
+
+"Preparing your special story 📖",
+
+
+"Turning the pages of love ✨",
+
+
+"Almost ready... 💕",
+
+
+"Welcome to our little world ❤️"
+
+
+];
+
+
+
+
+
+
+function showLoading(){
+
+
+    if(!loadingScreen) return;
+
+
+
+    loadingScreen.style.display="flex";
+
+
+
+    let progress=0;
+
+    let message=0;
+
+
+
+    const timer =
+    setInterval(()=>{
+
+
+        progress++;
+
+
+
+        if(loadingBar){
+
+            loadingBar.style.width =
+            progress+"%";
+
+        }
+
+
+
+        if(progress % 20 === 0){
+
+
+            message++;
+
+
+            if(
+            loadingMessages[message]
+            ){
+
+                loadingText.innerHTML =
+                loadingMessages[message];
+
+            }
+
+
+        }
+
+
+
+        if(progress>=100){
+
+
+            clearInterval(timer);
+
+
+            App.loadingFinished=true;
+
+
+            finishLoading();
+
+
+
+        }
+
+
+
+    },70);
+
+
+
+}
+
+
+
+
+
+function finishLoading(){
+
+
+    setTimeout(()=>{
+
+
+        if(loadingScreen){
+
+
+            loadingScreen.style.display="none";
+
+
+        }
+
+
+
+        const welcome =
+        document.getElementById("welcome");
+
+
+
+        if(welcome){
+
+
+            welcome.style.display="flex";
+
+
+            welcome.classList.add(
+            "page-open"
+            );
+
+
+        }
+
+
+
+    },700);
+
+
+}
+
+
+
+
+
+console.log(
+"❤️ V4 Script Part 1 Loaded"
+);
+/* ==================================================
+   PREMIUM BIRTHDAY BOOK WEBSITE V4
+
+   PART 2
+
+   3.2A - WELCOME PAGE
+   3.2B - START JOURNEY
+   3.2C - CHAPTER SYSTEM
+   3.2D - PAGE TURN ANIMATION
+
+================================================== */
+
+
+
+/* ==============================
+   3.2A
+   WELCOME PAGE
+============================== */
+
+
+const startBtn =
+document.getElementById("startBtn");
+
+
+const welcome =
+document.getElementById("welcome");
+
+
+const website =
+document.getElementById("website");
+
+
+
+if(startBtn){
+
+
+    startBtn.addEventListener("click",()=>{
+
+
+        if(welcome){
+
+
+            welcome.classList.add(
+            "page-close"
+            );
+
+
+        }
+
+
+
+        setTimeout(()=>{
+
+
+            if(welcome){
+
+                welcome.style.display="none";
+
+            }
+
+
+
+            if(website){
+
+                website.style.display="block";
+
+            }
+
+
+
+            openChapter(0);
+
+
+
+        },1000);
+
+
+
+    });
+
+
+}
+
+
+
+
+
+
+/* ==============================
+   3.2B
+   CHAPTER COLLECTION
+============================== */
+
+
+
+const chapters =
+document.querySelectorAll(".chapter");
+
+
+const nextButtons =
+document.querySelectorAll(".nextBtn");
+
+
+const prevButtons =
+document.querySelectorAll(".prevBtn");
+
+
+
+const progress =
+document.getElementById("progress");
+
+
+
+
+
+/* ==============================
+   3.2C
+   CHAPTER SYSTEM
+============================== */
+
+
+function hideChapters(){
+
+
+    chapters.forEach(chapter=>{
+
+
+        chapter.style.display="none";
+
+        chapter.classList.remove(
+        "active"
+        );
+
+
+    });
+
+
+}
+
+
+
+
+
+function openChapter(number){
+
+
+    if(chapters.length===0)
+    return;
+
+
+
+    if(number<0){
+
+        number=0;
+
+    }
+
+
+
+    if(number>=chapters.length){
+
+
+        openFinalPage();
+
+        return;
+
+
+    }
+
+
+
+
+    hideChapters();
+
+
+
+    App.currentPage=number;
+
+
+
+    const page =
+    chapters[number];
+
+
+
+    page.style.display="flex";
+
+
+
+    setTimeout(()=>{
+
+
+        page.classList.add(
+        "active"
+        );
+
+
+    },100);
+
+
+
+    updateChapterProgress();
+
+
+
+}
+
+
+
+
+
+
+
+function updateChapterProgress(){
+
+
+    if(progress){
+
+
+        progress.innerHTML =
+
+
+        "Chapter "
+
+        +(App.currentPage+1)
+
+        +" / "
+
+        +chapters.length;
+
+
+
+    }
+
+
+}
+
+
+
+
+
+/* ==============================
+   3.2D
+   PAGE TURN ANIMATION
+============================== */
+
+
+
+function nextPage(){
+
+
+
+    const current =
+    chapters[App.currentPage];
+
+
+
+    if(App.currentPage >= chapters.length-1){
+
+
+        openFinalPage();
+
+        return;
+
+
+    }
+
+
+
+
+    const next =
+    chapters[App.currentPage+1];
+
+
+
+
+    if(current){
+
+
+        current.classList.add(
+        "turn-left"
+        );
+
+
+    }
+
+
+
+
+    setTimeout(()=>{
+
+
+        openChapter(
+        App.currentPage+1
+        );
+
+
+    },800);
+
+
+
+}
+
+
+
+
+
+function previousPage(){
+
+
+
+    if(App.currentPage<=0)
+    return;
+
+
+
+    const current =
+    chapters[App.currentPage];
+
+
+
+    if(current){
+
+
+        current.classList.add(
+        "turn-right"
+        );
+
+
+    }
+
+
+
+    setTimeout(()=>{
+
+
+        openChapter(
+        App.currentPage-1
+        );
+
+
+    },800);
+
+
+
+}
+
+
+
+
+
+/* Buttons */
+
+
+nextButtons.forEach(button=>{
+
+
+    button.addEventListener(
+    "click",
+    nextPage
+    );
+
+
+});
+
+
+
+prevButtons.forEach(button=>{
+
+
+    button.addEventListener(
+    "click",
+    previousPage
+    );
+
+
+});
+
+
+
+
+
+
+/* Keyboard page turn */
+
+
+document.addEventListener(
+"keydown",
+(e)=>{
+
+
+    if(e.key==="ArrowRight"){
+
+
+        nextPage();
+
+
+    }
+
+
+
+    if(e.key==="ArrowLeft"){
+
+
+        previousPage();
+
+
+    }
+
+
+
+});
+
+
+
+
+
+
+
+console.log(
+"📖 V4 Script Part 2 Loaded"
+);
+/* ==================================================
+   PREMIUM BIRTHDAY BOOK WEBSITE V4
+
+   PART 3
+
+   3.3A - MUSIC SYSTEM
+   3.3B - CHAPTER 9 SONG
+   3.3C - ROMANTIC EFFECTS
+
+================================================== */
+
+
+
+/* ==============================
+   3.3A
+   BACKGROUND MUSIC
+============================== */
+
+
+const bgMusic =
+document.getElementById("bgMusic");
+
+
+
+function playBackgroundMusic(){
+
+
+    if(bgMusic){
+
+
+        bgMusic.volume=0.5;
+
+
+        bgMusic.play()
+        .catch(()=>{});
+
+
+    }
+
+
+}
+
+
+
+
+
+function pauseBackgroundMusic(){
+
+
+    if(bgMusic){
+
+        bgMusic.pause();
+
+    }
+
+
+}
+
+
+
+
+
+/* Start music after user interaction */
+
+document.addEventListener(
+"click",
+()=>{
+
+
+    if(App.unlocked){
+
+        playBackgroundMusic();
+
+    }
+
+
+},
+{
+once:true
+});
+
+
+
+
+
+
+/* ==============================
+   3.3B
+   CHAPTER 9 SPECIAL SONG
+============================== */
+
+
+const chapter9Song =
+document.getElementById("chapter9Song");
+
+
+const musicBtn =
+document.getElementById("musicBtn");
+
+
+
+let specialSongPlaying=false;
+
+
+
+
+if(musicBtn && chapter9Song){
+
+
+
+musicBtn.addEventListener(
+"click",
+()=>{
+
+
+    if(!specialSongPlaying){
+
+
+
+        pauseBackgroundMusic();
+
+
+
+        chapter9Song.play()
+        .catch(()=>{});
+
+
+
+        musicBtn.innerHTML =
+        "⏸ Pause Song";
+
+
+
+        specialSongPlaying=true;
+
+
+
+    }
+
+    else{
+
+
+        chapter9Song.pause();
+
+
+
+        playBackgroundMusic();
+
+
+
+        musicBtn.innerHTML =
+        "▶ Play Song";
+
+
+
+        specialSongPlaying=false;
+
+
+
+    }
+
+
+
+});
+
+
+
+}
+
+
+
+
+
+/* ==============================
+   3.3C
+   FLOATING HEARTS
+============================== */
+
+
+
+function createHeart(){
+
+
+
+    const heart =
+    document.createElement("div");
+
+
+
+    heart.className =
+    "floatingHeart";
+
+
+
+    heart.innerHTML =
+    ["❤️","💕","💖","💗"]
+    [
+    Math.floor(
+    Math.random()*4
+    )
+    ];
+
+
+
+    heart.style.left =
+    Math.random()*100+"vw";
+
+
+
+    heart.style.bottom =
+    "-30px";
+
+
+
+    document.body.appendChild(
+    heart
+    );
+
+
+
+    setTimeout(()=>{
+
+
         heart.remove();
+
+
     },6000);
 
+
+
 }
 
-setInterval(createHeart,800);
 
-// Sparkles
 
-document.addEventListener("click",(e)=>{
+setInterval(
+createHeart,
+1200
+);
 
-    for(let i=0;i<8;i++){
 
-        const sparkle=document.createElement("div");
 
-        sparkle.className="sparkle";
 
-        sparkle.style.left=(e.clientX+Math.random()*60-30)+"px";
-        sparkle.style.top=(e.clientY+Math.random()*60-30)+"px";
 
-        document.body.appendChild(sparkle);
+
+
+
+/* Sparkles on click */
+
+
+document.addEventListener(
+"click",
+(e)=>{
+
+
+    for(let i=0;i<6;i++){
+
+
+        const sparkle =
+        document.createElement("div");
+
+
+
+        sparkle.className =
+        "sparkle";
+
+
+
+        sparkle.style.left =
+        e.clientX+
+        Math.random()*40-
+        20+
+        "px";
+
+
+
+        sparkle.style.top =
+        e.clientY+
+        Math.random()*40-
+        20+
+        "px";
+
+
+
+        document.body.appendChild(
+        sparkle
+        );
+
+
 
         setTimeout(()=>{
+
+
             sparkle.remove();
-        },2000);
+
+
+        },1500);
+
+
 
     }
 
-});
-
-// ======================================
-// Cake
-// ======================================
-
-const cakeBtn=document.getElementById("cakeBtn");
-const cake=document.getElementById("cake");
-
-if(cakeBtn){
-
-    cakeBtn.addEventListener("click",()=>{
-
-        if(cake){
-            cake.innerHTML="🎂💨";
-        }
-
-        cakeBtn.innerHTML="✨ Wish Made!";
-        createHeart();
-
-        setTimeout(()=>{
-            alert("🎉 Happy Birthday Madhu Priya ❤️");
-        },600);
-
-    });
-
-}
-
-// ======================================
-// Gifts
-// ======================================
-
-const gifts=document.querySelectorAll(".gift");
-const giftMessage=document.getElementById("giftMessage");
-
-gifts.forEach(gift=>{
-
-    gift.addEventListener("click",()=>{
-
-        gift.style.transform="scale(1.2) rotate(10deg)";
-        gift.innerHTML="💝";
-
-        if(giftMessage){
-
-            giftMessage.innerHTML=gift.dataset.message;
-
-        }
-
-        setTimeout(()=>{
-
-            gift.style.transform="";
-            gift.innerHTML="🎁";
-
-        },500);
-
-    });
 
 });
 
-// ======================================
-// Photo Animation
-// ======================================
 
-document.querySelectorAll(".gallery img").forEach(img=>{
 
-    img.addEventListener("click",()=>{
 
-        img.style.transform="scale(1.08)";
-        img.style.transition=".4s";
 
-        setTimeout(()=>{
-            img.style.transform="scale(1)";
-        },400);
 
-    });
 
-});
-// ======================================
-// PREMIUM BIRTHDAY WEBSITE V3
-// PART 3
-// Fireworks • Roses • Replay
-// ======================================
+/* Falling Roses */
 
-// Fireworks
-
-function launchFirework() {
-
-    const fw = document.createElement("div");
-
-    fw.innerHTML = ["🎆","✨","🎇","💥"][Math.floor(Math.random()*4)];
-
-    fw.style.position = "fixed";
-    fw.style.left = Math.random()*100 + "vw";
-    fw.style.top = Math.random()*70 + "vh";
-    fw.style.fontSize = "40px";
-    fw.style.pointerEvents = "none";
-    fw.style.zIndex = "9999";
-
-    document.body.appendChild(fw);
-
-    fw.animate([
-        {transform:"scale(.2)",opacity:0},
-        {transform:"scale(2)",opacity:1},
-        {transform:"scale(3)",opacity:0}
-    ],{
-        duration:1500
-    });
-
-    setTimeout(()=>{
-        fw.remove();
-    },1500);
-
-}
-
-// Launch fireworks automatically on Chapter 10
-
-const chapter10 = chapters[9];
-
-if(chapter10){
-
-    const observer = new MutationObserver(()=>{
-
-        if(chapter10.classList.contains("active")){
-
-            for(let i=0;i<20;i++){
-
-                setTimeout(launchFirework,i*120);
-
-            }
-
-        }
-
-    });
-
-    observer.observe(chapter10,{
-        attributes:true,
-        attributeFilter:["class"]
-    });
-
-}
-
-// Falling Roses
 
 function createRose(){
 
-    const rose=document.createElement("div");
+
+
+    const rose =
+    document.createElement("div");
+
+
 
     rose.innerHTML="🌹";
 
+
+
     rose.style.position="fixed";
-    rose.style.left=Math.random()*100+"vw";
+
     rose.style.top="-40px";
-    rose.style.fontSize=(20+Math.random()*20)+"px";
+
+    rose.style.left=
+    Math.random()*100+"vw";
+
+    rose.style.fontSize="25px";
+
+    rose.style.zIndex="9999";
+
     rose.style.pointerEvents="none";
-    rose.style.zIndex="999";
 
-    document.body.appendChild(rose);
 
-    rose.animate([
-        {transform:"translateY(0) rotate(0deg)"},
-        {transform:"translateY(110vh) rotate(720deg)"}
-    ],{
-        duration:7000
+
+    document.body.appendChild(
+    rose
+    );
+
+
+
+    rose.animate(
+
+    [
+
+    {
+    transform:
+    "translateY(0) rotate(0deg)"
+    },
+
+    {
+
+    transform:
+    "translateY(110vh) rotate(720deg)"
+
+    }
+
+    ],
+
+    {
+
+    duration:7000
+
     });
+
+
 
     setTimeout(()=>{
+
+
         rose.remove();
+
+
     },7000);
 
+
+
 }
 
-setInterval(createRose,2500);
 
-// Replay Button
 
-const restart=document.getElementById("restart");
 
-if(restart){
 
-    restart.addEventListener("click",()=>{
+setInterval(
+createRose,
+2500
+);
 
-        currentChapter=0;
 
-        showChapter(0);
 
-        window.scrollTo({
-            top:0,
-            behavior:"smooth"
-        });
+
+
+console.log(
+"✨ V4 Script Part 3 Loaded"
+);
+/* ==================================================
+   PREMIUM BIRTHDAY BOOK WEBSITE V4
+
+   PART 4
+
+   3.4 - FINAL EFFECTS
+   3.5 - ENDING PAGE + REPLAY
+
+================================================== */
+
+
+
+/* ==============================
+   3.4A
+   FIREWORKS
+============================== */
+
+
+function createFirework(){
+
+
+    const firework =
+    document.createElement("div");
+
+
+    firework.innerHTML =
+    ["🎆","✨","🎇","💥"]
+    [
+    Math.floor(
+    Math.random()*4
+    )
+    ];
+
+
+
+    firework.style.position="fixed";
+
+    firework.style.left =
+    Math.random()*100+"vw";
+
+    firework.style.top =
+    Math.random()*70+"vh";
+
+    firework.style.fontSize="40px";
+
+    firework.style.zIndex="99999";
+
+    firework.style.pointerEvents="none";
+
+
+
+    document.body.appendChild(
+    firework
+    );
+
+
+
+    firework.animate(
+
+    [
+
+    {
+    transform:"scale(.2)",
+    opacity:0
+    },
+
+    {
+    transform:"scale(2)",
+    opacity:1
+    },
+
+    {
+    transform:"scale(3)",
+    opacity:0
+    }
+
+    ],
+
+    {
+
+    duration:1500
 
     });
 
+
+
+    setTimeout(()=>{
+
+        firework.remove();
+
+    },1500);
+
+
 }
 
-// Welcome
 
-hideAllChapters();
 
-console.log("❤️ Happy Birthday Madhu Priya ❤️");
-console.log("Premium Birthday Website Loaded Successfully!");
-// Typing Effect
 
-const letter = document.getElementById("letterText");
 
-if (letter) {
+function startFireworks(){
 
-    const text = letter.innerHTML;
-    letter.innerHTML = "";
 
-    let i = 0;
+    for(let i=0;i<25;i++){
 
-    function typeLetter() {
 
-        if (i < text.length) {
-            letter.innerHTML += text.charAt(i);
-            i++;
-            setTimeout(typeLetter, 30);
-        }
+        setTimeout(()=>{
+
+
+            createFirework();
+
+
+        },i*150);
+
 
     }
 
-    // Start typing when Chapter 8 becomes active
-    const chapter8 = chapters[7];
 
-    if (chapter8) {
+}
 
-        const observer = new MutationObserver(() => {
 
-            if (chapter8.classList.contains("active") && letter.innerHTML === "") {
-                typeLetter();
-            }
 
-        });
 
-        observer.observe(chapter8, {
-            attributes: true,
-            attributeFilter: ["class"]
-        });
+
+/* ==============================
+   3.5A
+   FINAL PAGE
+============================== */
+
+
+function openFinalPage(){
+
+
+
+    const finalPage =
+    document.getElementById("finalPage");
+
+
+
+    if(!finalPage){
+
+
+        console.log(
+        "Final page missing"
+        );
+
+        return;
+
 
     }
 
-}
-// ===================== PASSWORD SYSTEM =====================
 
-const correctPassword = "03062025";
 
-const passwordScreen = document.getElementById("passwordScreen");
-const loadingScreen = document.getElementById("loadingScreen");
-const welcomeScreen = document.getElementById("welcome");
+    chapters.forEach(page=>{
 
-const unlockBtn = document.getElementById("unlockBtn");
-const passwordInput = document.getElementById("passwordInput");
-const errorMsg = document.getElementById("errorMsg");
 
-if (unlockBtn) {
+        page.style.display="none";
 
-    unlockBtn.addEventListener("click", () => {
+        page.classList.remove(
+        "active"
+        );
 
-        if (passwordInput.value === correctPassword) {
-
-            passwordScreen.style.opacity = "0";
-
-            setTimeout(() => {
-
-                passwordScreen.style.display = "none";
-
-                loadingScreen.style.display = "flex";
-
-                let progress = 0;
-
-                const fill = document.getElementById("loadingFill");
-                const text = document.getElementById("loadingText");
-
-                const messages = [
-                    "Opening our story...",
-                    "Collecting memories...",
-                    "Turning every page...",
-                    "Almost ready...",
-                    "Welcome Kodiguddu ❤️"
-                ];
-
-                const timer = setInterval(() => {
-
-                    progress += 20;
-
-                    if (fill) fill.style.width = progress + "%";
-
-                    if (text) {
-
-                        text.innerHTML =
-                            messages[Math.min(progress / 20 - 1, messages.length - 1)];
-
-                    }
-
-                    if (progress >= 100) {
-
-                        clearInterval(timer);
-
-                        loadingScreen.style.display = "none";
-
-                        welcomeScreen.style.display = "flex";
-
-                    }
-
-                }, 1400);
-
-            }, 800);
-
-        } else {
-
-            errorMsg.innerHTML = "Wrong Password ❤️";
-
-            document.getElementById("roseHint").style.display = "block";
-
-            passwordInput.value = "";
-
-            const box = document.querySelector(".password-box");
-
-            if (box) {
-
-                box.animate([
-                    { transform: "translateX(-10px)" },
-                    { transform: "translateX(10px)" },
-                    { transform: "translateX(-10px)" },
-                    { transform: "translateX(0)" }
-                ], {
-                    duration: 500
-                });
-
-            }
-
-        }
 
     });
 
-}
-// ===================== NIGHT ANIMATION =====================
-function createStars() {
-    const container = document.createElement("div");
-    container.className = "stars";
-    document.body.appendChild(container);
 
-    for (let i = 0; i < 280; i++) {
-        const star = document.createElement("div");
-        star.className = "star";
-        star.style.width = star.style.height = Math.random() * 3 + 1 + "px";
-        star.style.left = Math.random() * 100 + "vw";
-        star.style.top = Math.random() * 85 + "vh";
-        star.style.animationDelay = Math.random() * 3 + "s";
-        container.appendChild(star);
+
+    finalPage.style.display="flex";
+
+
+
+    setTimeout(()=>{
+
+
+        finalPage.classList.add(
+        "active"
+        );
+
+
+
+        startFireworks();
+
+
+
+        closeBookAnimation();
+
+
+
+    },300);
+
+
+
+}
+
+
+
+
+
+
+
+/* ==============================
+   3.5B
+   CLOSE BOOK
+============================== */
+
+
+function closeBookAnimation(){
+
+
+    const book =
+    document.querySelector(".book");
+
+
+
+    if(book){
+
+
+        setTimeout(()=>{
+
+
+            book.classList.add(
+            "close"
+            );
+
+
+        },2000);
+
+
+
     }
 
-    // Moon
-    const moon = document.createElement("div");
-    moon.className = "moon";
-    document.body.appendChild(moon);
+
 }
 
-function createShootingStar() {
-    const s = document.createElement("div");
-    s.className = "shooting-star";
-    s.style.left = Math.random() * 70 + "vw";
-    s.style.top = Math.random() * 50 + "vh";
-    s.style.width = Math.random() * 80 + 60 + "px";
-    document.body.appendChild(s);
-    setTimeout(() => s.remove(), 3000);
-}
 
-setInterval(createShootingStar, 1600);
 
-// Initialize everything
-createStars();
-        function createPetal(){
 
-const petal=document.createElement("div");
 
-petal.innerHTML="🌹";
 
-petal.style.position="fixed";
 
-petal.style.left=Math.random()*100+"vw";
+/* ==============================
+   3.5C
+   REPLAY SYSTEM
+============================== */
 
-petal.style.top="-30px";
 
-petal.style.fontSize="24px";
+const replay =
+document.getElementById("restart");
 
-petal.style.pointerEvents="none";
 
-petal.style.zIndex="999999";
 
-document.body.appendChild(petal);
+if(replay){
 
-petal.animate([
 
-{transform:"translateY(0) rotate(0deg)"},
+replay.addEventListener(
+"click",
+()=>{
 
-{transform:"translateY(110vh) rotate(360deg)"}
 
-],{
 
-duration:6000
+    location.reload();
+
+
 
 });
 
-setTimeout(()=>petal.remove(),6000);
 
 }
 
-setInterval(createPetal,900);
+
+
+
+
+
+/* ==============================
+   3.5D
+   FINAL MESSAGE
+============================== */
+
+
+const finalText =
+document.getElementById("finalMessage");
+
+
+
+if(finalText){
+
+
+    const message =
+
+    "I LOVE YOU KODIGUDDU ❤️";
+
+
+
+    finalText.innerHTML="";
+
+
+
+    let index=0;
+
+
+
+    function typeFinal(){
+
+
+
+        if(index < message.length){
+
+
+
+            finalText.innerHTML +=
+            message.charAt(index);
+
+
+
+            index++;
+
+
+            setTimeout(
+            typeFinal,
+            120
+            );
+
+
+        }
+
+
+    }
+
+
+
+    typeFinal();
+
+
+
+}
+
+
+
+
+
+console.log(
+"❤️ V4 Script Part 4 Loaded Successfully"
+);
