@@ -506,6 +506,8 @@ if (unlockBtn) {
     });
 
         }
+            });
+}
 // ===================== NIGHT ANIMATION =====================
 function createStars() {
     const container = document.createElement("div");
