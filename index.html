@@ -1,1 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For My Everything ❤️</title>
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Cinzel:wght@600;700&family=Great+Vibes&family=Plus+Jakarta+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <audio id="bgMusic" loop src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=romantic-piano-112199.mp3"></audio>
+
+    <style>
+        :root {
+            --gold: #d4af37;
+            --dark-bg: #07040a;
+            --card-bg: rgba(22, 9, 20, 0.92);
+            --parchment-bg: #f4e4bc;
+            --parchment-text: #2c1a0e;
+            --royal-red: #8b0000;
+            --accent-pink: #ff2a7a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+        }
+
+        body {
+            background-color: var(--dark-bg);
+            color: #f0e6d2;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        .ambient-bg {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            background: radial-gradient(circle at 50% 30%, #1a0013 0%, #07040a 85%);
+        }
+
+        #fxCanvas {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 999;
+        }
+
+        section {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 24px;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .card {
+            width: 100%;
+            max-width: 820px;
+            padding: 40px 28px;
+            border-radius: 20px;
+            background: var(--card-bg);
+            border: 2px solid rgba(212, 175, 55, 0.4);
+            box-shadow: 0 0 40px rgba(0, 0, 0, 0.9), inset 0 0 15px rgba(212, 175, 55, 0.15);
+            text-align: center;
+            position: relative;
+        }
+
+        h1 {
+            font-family: 'Cinzel Decorative', serif;
+            color: var(--gold);
+            margin-bottom: 15px;
+            text-shadow: 0 0 12px rgba(212, 175, 55, 0.5);
+        }
+
+        p {
+            line-height: 1.7;
+            color: #d4c3b3;
+        }
+
+        .btn-royal {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 14px 38px;
+            border-radius: 50px;
+            border: 2px solid var(--gold);
+            background: linear-gradient(135deg, #4a0d1d 0%, #1a050b 100%);
+            color: var(--gold);
+            font-family: 'Cinzel', serif;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-top: 25px;
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.2);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .btn-royal:hover {
+            transform: scale(1.03);
+            box-shadow: 0 0 25px var(--gold);
+        }
+
+        /* 1. HEART PUZZLE */
+        .puzzle-box {
+            position: relative;
+            width: 220px;
+            height: 220px;
+            margin: 25px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .heart-outline {
+            font-size: 100px;
+            opacity: 0.2;
+            filter: grayscale(100%);
+        }
+
+        .puzzle-piece {
+            position: absolute;
+            font-size: 45px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        #piece1 { top: 10px; left: 10px; }
+        #piece2 { top: 10px; right: 10px; }
+        #piece3 { bottom: 10px; left: 10px; }
+        #piece4 { bottom: 10px; right: 10px; }
+
+        /* 2. LIVE TIMER */
+        .timer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(85px, 1fr));
+            gap: 12px;
+            margin: 30px 0;
+        }
+
+        .timer-box {
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid var(--gold);
+            padding: 15px 5px;
+            border-radius: 12px;
+        }
+
+        .timer-box h3 {
+            font-family: 'Cinzel', serif;
+            font-size: 1.8rem;
+            color: #ffffff;
+        }
+
+        .timer-box span {
+            font-size: 0.7rem;
+            color: var(--gold);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* 3. NATURAL PARCHMENT LETTER */
+        .royal-parchment {
+            background: linear-gradient(135deg, #f4e4bc 0%, #e2ca90 100%);
+            color: var(--parchment-text);
+            padding: 30px;
+            border-radius: 8px;
+            border: 10px solid var(--royal-red);
+            box-shadow: inset 0 0 30px rgba(0,0,0,0.3);
+            text-align: left;
+            margin-top: 20px;
+            font-family: 'Cinzel', serif;
+            max-height: 420px;
+            overflow-y: auto;
+            font-size: 0.95rem;
+            line-height: 2;
+            white-space: pre-wrap;
+            font-weight: 600;
+        }
+
+        /* 4. 100 REASONS DISPLAY */
+        .reasons-scroll-box {
+            max-height: 400px;
+            overflow-y: auto;
+            text-align: left;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.75);
+            border: 1px solid var(--gold);
+            border-radius: 12px;
+            margin: 25px 0;
+        }
+
+        .reason-row {
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .reason-row strong {
+            color: var(--gold);
+            font-family: 'Cinzel', serif;
+            margin-right: 8px;
+        }
+
+        /* 5. CAKE CELEBRATION */
+        .cake-wrapper {
+            margin: 20px auto;
+            cursor: pointer;
+            display: inline-block;
+        }
+
+        .anniversary-title {
+            font-family: 'Great Vibes', cursive;
+            font-size: 3.5rem;
+            color: var(--accent-pink);
+            text-shadow: 0 0 20px var(--accent-pink);
+            margin-top: 15px;
+        }
+
+        @media (max-width: 600px) {
+            .card { padding: 30px 16px; }
+            h1 { font-size: 1.6rem; }
+            .royal-parchment { padding: 20px 14px; font-size: 0.9rem; }
+            .anniversary-title { font-size: 2.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="ambient-bg"></div>
+    <canvas id="fxCanvas"></canvas>
+
+    <section id="secPuzzle">
+        <div class="card">
+            <h1>Complete My Heart</h1>
+            <p>Tap each broken piece to assemble my heart and enter...</p>
+
+            <div class="puzzle-box">
+                <div class="heart-outline" id="baseHeart">💔</div>
+                <div class="puzzle-piece" id="piece1" onclick="fitPiece(1)">🧩</div>
+                <div class="puzzle-piece" id="piece2" onclick="fitPiece(2)">🧩</div>
+                <div class="puzzle-piece" id="piece3" onclick="fitPiece(3)">🧩</div>
+                <div class="puzzle-piece" id="piece4" onclick="fitPiece(4)">🧩</div>
+            </div>
+
+            <p style="color: var(--gold);">Pieces Assembled: <span id="joinedCount">0</span>/4</p>
+        </div>
+    </section>
+
+    <section id="secQuestion" class="hidden">
+        <div class="card">
+            <h1 style="font-size: 3rem;">👑</h1>
+            <h1>Will You Be Mine Forever?</h1>
+            <div>
+                <button class="btn-royal" id="btnYes">YES, FOREVER ❤️</button>
+                <button class="btn-royal" id="btnNo" style="background: transparent;">NO 💔</button>
+            </div>
+        </div>
+    </section>
+
+    <section id="secTimer" class="hidden">
+        <div class="card">
+            <h1>Our Sacred Journey</h1>
+            <p>Every single moment together since February 10, 2023</p>
+
+            <div class="timer-grid">
+                <div class="timer-box"><h3 id="years">0</h3><span>Years</span></div>
+                <div class="timer-box"><h3 id="months">0</h3><span>Months</span></div>
+                <div class="timer-box"><h3 id="days">0</h3><span>Days</span></div>
+                <div class="timer-box"><h3 id="hours">0</h3><span>Hours</span></div>
+                <div class="timer-box"><h3 id="minutes">0</h3><span>Mins</span></div>
+                <div class="timer-box"><h3 id="seconds">0</h3><span>Secs</span></div>
+            </div>
+
+            <button class="btn-royal" onclick="switchSec('secTimer', 'secLetter')">Read My Heart 📜</button>
+        </div>
+    </section>
+
+    <section id="secLetter" class="hidden">
+        <div class="card">
+            <h1>From My Heart To Yours</h1>
+
+            <div class="royal-parchment">My Dearest Love,
+
+Sometimes I sit back and just think about how unpredictable life really is. When we first met, I never imagined that a simple, quiet friendship would turn into the most deeply meaningful love I have ever known. We didn't plan for this, and we didn't force it—it just happened naturally, step by step, until one day I realized my entire world had revolved around you.
+
+Looking back now, I can see so clearly that coming into your life was the greatest blessing I've ever received. Loving you doesn't feel like a choice; it feels like the most natural thing my heart was always meant to do. 
+
+There are so many things about you that make me fall for you deeper every single day. You carry yourself with such incredible dignity, purity, and grace. Your heart is so rare and kind, and the loyalty you show us gives me a kind of peace I’ve never felt anywhere else in this world. With you, I don't have to hide who I am or put on a front. I can just be myself, completely safe in your care.
+
+And speaking of care... that is what hits my heart the hardest. After my own mother, you are the only person who has ever cared for me with such pure, selfless warmth. The way you check up on me, the way you notice my silence when I’m tired or overwhelmed, and the gentle way you shield me from worries—it touches my soul in a way words can barely describe. You look after my heart, my peace, and my happiness with so much genuine love and protection.
+
+You are not just my partner—you are my sanctuary, my quiet anchor in every storm, my best friend, and my whole world. Thank you for staying by my side, for believing in us, and for bringing so much light into my life every single day.
+
+I love you deeply, truly, and completely—today, tomorrow, and for all the years ahead. ❤️</div>
+
+            <button class="btn-royal" onclick="switchSec('secLetter', 'secReasons')">100 Reasons Why I Love You 👑</button>
+        </div>
+    </section>
+
+    <section id="secReasons" class="hidden">
+        <div class="card">
+            <h1>100 Reasons Why I Love You</h1>
+            <div class="reasons-scroll-box" id="reasonsContainer"></div>
+            <button class="btn-royal" onclick="switchSec('secReasons', 'secCake')">Celebrate Our Love 🎉</button>
+        </div>
+    </section>
+
+    <section id="secCake" class="hidden">
+        <div class="card">
+            <h1>A Celebration For My Queen</h1>
+            <p id="cakeHint" style="color: var(--gold); margin-bottom: 10px;">TAP THE CAKE TO BLOW OUT THE CANDLE!</p>
+
+            <div class="cake-wrapper" id="cakeTrigger">
+                <canvas id="cakeCanvas" width="220" height="170"></canvas>
+            </div>
+
+            <div id="celebrationBlock" class="hidden">
+                <div class="anniversary-title">Happy Anniversary My Love ❤️</div>
+                <p style="font-size: 1.1rem; color: #ffffff; margin-top: 10px;">
+                    "Every heartbeat of mine belongs to you today, tomorrow, and forever."
+                </p>
+                <button class="btn-royal" onclick="location.reload()" style="margin-top: 25px;">Replay Story 🔄</button>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        const audio = document.getElementById('bgMusic');
+
+        function switchSec(from, to) {
+            document.getElementById(from).classList.add('hidden');
+            document.getElementById(to).classList.remove('hidden');
+        }
+
+        // 1. Puzzle Mechanics
+        let count = 0;
+        function fitPiece(id) {
+            const pc = document.getElementById(`piece${id}`);
+            if (pc.style.display === 'none') return;
+            pc.style.display = 'none';
+            count++;
+            document.getElementById('joinedCount').innerText = count;
+
+            try { audio.play(); } catch(e) {}
+
+            if (count === 4) {
+                const base = document.getElementById('baseHeart');
+                base.innerHTML = '💖';
+                base.style.opacity = '1';
+                setTimeout(() => switchSec('secPuzzle', 'secQuestion'), 1000);
+            }
+        }
+
+        // 2. Runaway NO Button
+        const btnNo = document.getElementById('btnNo');
+        const evade = () => {
+            btnNo.style.position = 'fixed';
+            btnNo.style.left = `${Math.random() * (window.innerWidth - 100)}px`;
+            btnNo.style.top = `${Math.random() * (window.innerHeight - 50)}px`;
+        };
+        btnNo.addEventListener('mouseover', evade);
+        btnNo.addEventListener('touchstart', evade);
+
+        document.getElementById('btnYes').addEventListener('click', () => {
+            switchSec('secQuestion', 'secTimer');
+            runLiveTimer();
+        });
+
+        // 3. Live Relationship Counter
+        function runLiveTimer() {
+            const startDate = new Date("February 10, 2023 00:00:00").getTime();
+            setInterval(() => {
+                const now = new Date().getTime();
+                const diff = now - startDate;
+                if (diff < 0) return;
+
+                document.getElementById('years').innerText = Math.floor(diff / (1000 * 60 * 60 * 24 * 365.25));
+                document.getElementById('months').innerText = Math.floor((diff % (1000 * 60 * 60 * 24 * 365.25)) / (1000 * 60 * 60 * 24 * 30.44));
+                document.getElementById('days').innerText = Math.floor((diff % (1000 * 60 * 60 * 24 * 30.44)) / (1000 * 60 * 60 * 24));
+                document.getElementById('hours').innerText = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                document.getElementById('minutes').innerText = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                document.getElementById('seconds').innerText = Math.floor((diff % (1000 * 60)) / 1000);
+            }, 1000);
+        }
+
+        // 4. 100 FULL REASONS WHY I LOVE HER
+        const hundredReasons = [
+            "Your beautiful, genuine smile that brightens up my worst days.",
+            "The way your eyes shine whenever you are genuinely happy.",
+            "Your rare, noble character and high personal values.",
+            "How deeply you care for me like a mother after my own mother.",
+            "Your unwavering loyalty and dedication to our bond.",
+            "How our simple, unexpected friendship bloomed into sacred love.",
+            "Your soft and comforting voice that brings instant peace to my mind.",
+            "The way you remember even the smallest details about me.",
+            "Your endless patience and understanding with my flaws.",
+            "How incredibly safe and grounded I feel when I am with you.",
+            "Your natural dignity, grace, and self-respect.",
+            "How you protect my heart from sadness and worry.",
+            "Your unconditional encouragement in everything I strive to do.",
+            "The comforting warmth of sitting quietly by your side.",
+            "How effortlessly you inspire me to be a better person.",
+            "Your warm, gentle, and protective hugs.",
+            "The way you celebrate my happiness as if it were your own.",
+            "Your honesty, sincerity, and absolute purity of soul.",
+            "How you shield me from stress and calm my anxieties.",
+            "The adorable and sweet way you look at me.",
+            "Your soft kindness toward everyone around you.",
+            "The grand, beautiful future we are building step by step.",
+            "How you notice when I am quiet and take care of me.",
+            "Your selfless and forgiving nature.",
+            "The soothing feeling of holding your hand in mine.",
+            "How attentively you listen whenever I speak to you.",
+            "Your deep wisdom during challenging or confusing moments.",
+            "How every single day with you feels like an invaluable blessing.",
+            "Your sweet laughter that instantly heals my heavy mood.",
+            "How faithfully and loyally you keep all your promises.",
+            "The gentle way you hold me when I need emotional comfort.",
+            "Your dignified and graceful presence everywhere you go.",
+            "How selflessly you prioritize my well-being and happiness.",
+            "Your emotional strength and intelligence.",
+            "The sweet, affectionate nickname you have for me.",
+            "How quickly you pick up on my mood changes and support me.",
+            "Your rare purity of heart that leaves me in complete awe.",
+            "The way you stand firmly by my side through every situation.",
+            "How your presence makes my world feel complete.",
+            "Your deep respect for our relationship and commitment.",
+            "The way your smile lights up your whole face.",
+            "Your soothing touch that makes all my pain disappear.",
+            "How you make sure I never feel alone or forgotten.",
+            "Your rock-solid belief in our love story.",
+            "The gentle, respectful way you speak to my soul.",
+            "How you instill confidence in me when I doubt myself.",
+            "Your rare ability to bring peace wherever you go.",
+            "How deeply and selflessly you care for those you love.",
+            "Your high moral compass and integrity.",
+            "The way you look after my health and daily comfort.",
+            "How you give me courage to face life's daily battles.",
+            "Your pure, selfless love that asks for nothing in return.",
+            "The cherished memories we have built together so far.",
+            "How you make ordinary, quiet days feel special.",
+            "Your unexpected, loving gestures that catch me off guard.",
+            "The way you look at me like I am your entire world.",
+            "Your comforting presence when things get tough.",
+            "How you bring balance and harmony into my life.",
+            "Your cute humor that never fails to make me laugh.",
+            "The high respect you show for my thoughts and feelings.",
+            "How you bring out the gentlest, best side of me.",
+            "Your absolute loyalty that gives me total peace of mind.",
+            "The protective instinct you have over my peace of mind.",
+            "How every romantic song reminds me of your presence.",
+            "Your inner beauty that shines even brighter than your outer beauty.",
+            "How gently you validate my feelings.",
+            "The wisdom you show when handling difficult moments.",
+            "The warm feeling of your hand wrapped in mine.",
+            "How you make me feel genuinely valued and treasured.",
+            "Your motherly affection and warmth that heal me completely.",
+            "The way your presence fills any space with joy.",
+            "How you give me a clear sense of direction and purpose.",
+            "Your true, unselfish joy for my progress in life.",
+            "The absolute trust and faith you put in me.",
+            "How effortless and natural loving you feels.",
+            "Your patience when I get overwhelmed or tired.",
+            "The beautiful way you express your affection to me.",
+            "How firmly you stand as my ultimate anchor in life.",
+            "Your sweet smile when you catch me staring at you.",
+            "The deep peace that settles in my heart when you are near.",
+            "Your dedication to nourishing our love every day.",
+            "How you make me feel like the luckiest person in the world.",
+            "Your refined character and polite nature.",
+            "The warmth in your eyes whenever you speak to me.",
+            "How you heal parts of my heart I didn't know were broken.",
+            "Your complete devotion to our journey together.",
+            "The way you listen to my deepest secrets without judgment.",
+            "How you consistently bring light into my world.",
+            "Your selfless quiet sacrifices for our happiness.",
+            "The reassuring comfort of knowing you are always there.",
+            "Your beautiful soul that outshines everything else.",
+            "How every moment shared with you becomes an unforgettable memory.",
+            "Your inner resilience that inspires me every day.",
+            "The gentleness with which you care for my heart.",
+            "How you turn my difficult days into hope and peace.",
+            "Your endless generosity and genuine kindness.",
+            "The truth and sincerity visible in your eyes.",
+            "How you are my best friend, my soulmate, and my Queen.",
+            "The way my heart beats faster for you every single day.",
+            "Because loving you is, and always will be, the best part of my life. ♾️"
+        ];
+
+        const container = document.getElementById('reasonsContainer');
+        hundredReasons.forEach((reason, index) => {
+            container.innerHTML += `<div class="reason-row"><strong>${index + 1}.</strong> ${reason}</div>`;
+        });
+
+        // 5. Cake Canvas Rendering
+        let candleLit = true;
+        function renderCake() {
+            const cvs = document.getElementById('cakeCanvas');
+            const ctx = cvs.getContext('2d');
+            ctx.clearRect(0, 0, cvs.width, cvs.height);
+
+            // Base Tier
+            ctx.fillStyle = '#4a0d1d';
+            ctx.fillRect(30, 100, 160, 50);
+
+            // Top Tier
+            ctx.fillStyle = '#8b0000';
+            ctx.fillRect(55, 65, 110, 35);
+
+            // Candle
+            ctx.fillStyle = '#f4e4bc';
+            ctx.fillRect(106, 35, 8, 30);
+
+            // Flame
+            if (candleLit) {
+                ctx.fillStyle = '#ffcc00';
+                ctx.beginPath();
+                ctx.arc(110, 27, 7, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+        renderCake();
+
+        document.getElementById('cakeTrigger').addEventListener('click', () => {
+            candleLit = false;
+            renderCake();
+            document.getElementById('cakeHint').style.display = 'none';
+            document.getElementById('celebrationBlock').classList.remove('hidden');
+            launchFireworks();
+        });
+
+        // 6. Fireworks Engine
+        function launchFireworks() {
+            const canvas = document.getElementById('fxCanvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            let particles = [];
+            for (let i = 0; i < 110; i++) {
+                particles.push({
+                    x: canvas.width / 2,
+                    y: canvas.height / 2,
+                    vx: (Math.random() - 0.5) * 10,
+                    vy: (Math.random() - 0.5) * 10,
+                    color: `hsl(${Math.random() * 60 + 320}, 100%, 65%)`,
+                    size: Math.random() * 3 + 2,
+                    alpha: 1
+                });
+            }
+
+            function drawParticles() {
+                ctx.fillStyle = 'rgba(7, 4, 10, 0.2)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                particles.forEach((p, index) => {
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    p.alpha -= 0.015;
+                    ctx.fillStyle = p.color;
+                    ctx.globalAlpha = Math.max(0, p.alpha);
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                    ctx.fill();
+
+                    if (p.alpha <= 0) particles.splice(index, 1);
+                });
+
+                if (particles.length > 0) requestAnimationFrame(drawParticles);
+            }
+            drawParticles();
+        }
+    </script>
+</body>
+                                         </html>
