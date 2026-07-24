@@ -3,772 +3,951 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>To My Eternal Love ❤️</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <title>Our Forever Story ❤️</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+    <audio id="bgMusic" loop src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=romantic-piano-112199.mp3"></audio>
+
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Poppins:wght@300;400;600;700&family=Cinzel:wght@500;700&display=swap');
+        /* ==========================================
+           RESET & GLOBALS
+        ========================================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
 
         body {
             font-family: 'Poppins', sans-serif;
-            background: #0f051d;
+            background: #050510;
             color: #fff;
             overflow-x: hidden;
-            user-select: none;
         }
 
-        .font-cursive { font-family: 'Dancing Script', cursive; }
-        .font-cinzel { font-family: 'Cinzel', serif; }
-
-        /* Animated Glowing Background */
-        .bg-gradient-4k {
-            background: radial-gradient(circle at 50% 50%, #2a0833 0%, #0d0118 70%, #05000a 100%);
-            background-size: 200% 200%;
-            animation: gradientPulse 12s ease infinite;
+        /* ==========================================
+           ANIMATED BACKGROUND
+        ========================================== */
+        #background {
+            position: fixed;
+            inset: 0;
+            z-index: -5;
+            overflow: hidden;
+            background: linear-gradient(180deg, #050510, #12001f, #240033, #050510);
         }
 
-        @keyframes gradientPulse {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+        #stars {
+            position: absolute;
+            width: 100%;
+            height: 100%;
         }
 
-        /* Glassmorphism */
-        .glass-card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), inset 0 0 15px rgba(255, 105, 180, 0.1);
+        .aurora {
+            position: absolute;
+            width: 140%;
+            height: 140%;
+            left: -20%;
+            top: -20%;
+            filter: blur(120px);
+            opacity: .5;
+            background:
+                radial-gradient(circle, #ff0088, transparent 40%),
+                radial-gradient(circle, #00c3ff, transparent 35%),
+                radial-gradient(circle, #a000ff, transparent 40%);
+            animation: auroraMove 18s linear infinite;
         }
 
-        /* Neon Glow Effects */
-        .glow-text-pink {
-            text-shadow: 0 0 10px #ff2a8d, 0 0 20px #ff2a8d, 0 0 40px #ff2a8d;
-        }
-        .glow-heart {
-            filter: drop-shadow(0 0 15px rgba(255, 42, 141, 0.8));
+        @keyframes auroraMove {
+            0% { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(180deg) scale(1.2); }
+            100% { transform: rotate(360deg) scale(1); }
         }
 
-        /* Puzzle Piece Styling */
-        .puzzle-piece {
-            cursor: grab;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-        .puzzle-piece:active {
-            cursor: grabbing;
-        }
-        .puzzle-slot {
-            transition: all 0.3s ease;
+        .floating-hearts {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
         }
 
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: rgba(15, 5, 29, 0.8); }
-        ::-webkit-scrollbar-thumb { background: #ff2a8d; border-radius: 10px; }
-
-        /* Floating Animation */
-        @keyframes float {
-            0% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-12px) rotate(3deg); }
-            100% { transform: translateY(0px) rotate(0deg); }
+        .floating-hearts span {
+            position: absolute;
+            bottom: -100px;
+            color: #ff4fa6;
+            font-size: 18px;
+            animation: heartFloat linear infinite;
+            opacity: .8;
         }
-        .floating { animation: float 4s ease-in-out infinite; }
 
-        /* Pulse glow */
-        @keyframes pulseGlow {
-            0%, 100% { transform: scale(1); filter: drop-shadow(0 0 15px #ff2a8d); }
-            50% { transform: scale(1.05); filter: drop-shadow(0 0 30px #ff2a8d); }
+        @keyframes heartFloat {
+            0% { transform: translateY(0) scale(.6); opacity: 0; }
+            20% { opacity: 1; }
+            100% { transform: translateY(-120vh) scale(1.3); opacity: 0; }
         }
-        .pulse-glow { animation: pulseGlow 2.5s infinite; }
+
+        /* ==========================================
+           COMMON SECTION & GLASS CARDS
+        ========================================== */
+        section {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .lockContainer,
+        .questionBox,
+        .timerContainer,
+        .letterContainer,
+        .reasonContainer,
+        .celebrationContainer,
+        .finalContainer {
+            width: 95%;
+            max-width: 900px;
+            padding: 40px;
+            border-radius: 30px;
+            background: rgba(255, 255, 255, .08);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, .15);
+            box-shadow: 0 0 50px rgba(255, 0, 140, .2), 0 0 100px rgba(0, 170, 255, .1);
+            text-align: center;
+        }
+
+        /* ==========================================
+           HEART PUZZLE ASSEMBLY
+        ========================================== */
+        .lockContainer h1 {
+            font-size: 60px;
+            margin-bottom: 10px;
+            animation: pulseHeart 2s infinite;
+        }
+
+        @keyframes pulseHeart {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+            100% { transform: scale(1); }
+        }
+
+        #heartArea {
+            position: relative;
+            width: 320px;
+            height: 320px;
+            margin: 20px auto;
+        }
+
+        #heartFrame {
+            position: absolute;
+            width: 180px;
+            height: 180px;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%) rotate(-45deg);
+            background: rgba(255, 255, 255, .05);
+            border: 3px dashed #ff4da6;
+            border-radius: 20px;
+            transition: all 1s ease-in-out;
+        }
+
+        #heartFrame::before,
+        #heartFrame::after {
+            content: "";
+            position: absolute;
+            width: 180px;
+            height: 180px;
+            border: 3px dashed #ff4da6;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, .05);
+            transition: all 1s ease-in-out;
+        }
+
+        #heartFrame::before { top: -90px; left: 0; }
+        #heartFrame::after { left: 90px; top: 0; }
+
+        /* Assembled State Animation */
+        #heartFrame.assembled {
+            background: linear-gradient(135deg, #ff0066, #ff6ea8) !important;
+            border-color: #ff006a !important;
+            box-shadow: 0 0 60px #ff006a, 0 0 100px #ff5ea8;
+            transform: translate(-50%, -50%) rotate(-45deg) scale(1.1);
+        }
+
+        #heartFrame.assembled::before,
+        #heartFrame.assembled::after {
+            background: linear-gradient(135deg, #ff0066, #ff6ea8) !important;
+            border-color: #ff006a !important;
+        }
+
+        .piece {
+            position: absolute;
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, #ff0066, #ff6ea8);
+            border-radius: 12px;
+            box-shadow: 0 0 20px #ff2f92;
+            animation: floatPiece 4s ease-in-out infinite;
+            transition: all 1s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            cursor: pointer;
+        }
+
+        .piece1 { top: 10px; left: 20px; }
+        .piece2 { top: 30px; right: 20px; }
+        .piece3 { left: 10px; bottom: 50px; }
+        .piece4 { right: 10px; bottom: 40px; }
+        .piece5 { top: 130px; left: -10px; }
+        .piece6 { top: 140px; right: -10px; }
+        .piece7 { bottom: -10px; left: 100px; }
+        .piece8 { bottom: -10px; right: 100px; }
+
+        .piece.snapped {
+            top: 50% !important;
+            left: 50% !important;
+            transform: translate(-50%, -50%) scale(0) !important;
+            opacity: 0;
+        }
+
+        @keyframes floatPiece {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-12px); }
+            100% { transform: translateY(0); }
+        }
+
+        /* ==========================================
+           BIG HEART COMPLETION LOADING SCREEN
+        ========================================== */
+        #heartLoadingScreen {
+            position: fixed;
+            inset: 0;
+            background: rgba(5, 5, 16, 0.95);
+            backdrop-filter: blur(25px);
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .big-glowing-heart {
+            font-size: 110px;
+            animation: heartPulseGlow 1.5s infinite alternate;
+            margin-bottom: 25px;
+        }
+
+        @keyframes heartPulseGlow {
+            0% { transform: scale(1); filter: drop-shadow(0 0 20px #ff006a); }
+            100% { transform: scale(1.25); filter: drop-shadow(0 0 60px #ff5ea8); }
+        }
+
+        .completion-line {
+            font-family: 'Dancing Script', cursive;
+            font-size: 42px;
+            color: #ff7ab8;
+            text-shadow: 0 0 20px rgba(255, 0, 120, 0.8);
+            margin-bottom: 20px;
+            max-width: 800px;
+        }
+
+        .loading-bar-container {
+            width: 280px;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 15px;
+        }
+
+        .loading-bar-fill {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, #ff006a, #ff7ab8);
+            transition: width 3.5s linear;
+        }
+
+        /* ==========================================
+           BUTTONS & TYPOGRAPHY
+        ========================================== */
+        button {
+            padding: 16px 40px;
+            border: none;
+            border-radius: 50px;
+            background: linear-gradient(90deg, #ff006a, #ff5ea8);
+            color: #fff;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: .35s;
+            box-shadow: 0 0 30px rgba(255, 0, 120, .5);
+            margin: 10px;
+        }
+
+        button:hover {
+            transform: scale(1.08);
+            box-shadow: 0 0 60px rgba(255, 0, 150, .8);
+        }
+
+        /* ==========================================
+           LOVE TIMER
+        ========================================== */
+        #loveTimer {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+            gap: 15px;
+            margin-top: 35px;
+            margin-bottom: 30px;
+        }
+
+        .box {
+            padding: 20px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, .08);
+            backdrop-filter: blur(12px);
+        }
+
+        .box h2 {
+            font-size: 34px;
+            color: #ff7ab8;
+            margin-bottom: 5px;
+        }
+
+        /* ==========================================
+           ENVELOPE & LETTER
+        ========================================== */
+        #envelope {
+            width: 320px;
+            height: 200px;
+            margin: auto;
+            background: linear-gradient(135deg, #ff6ea8, #ff006a);
+            border-radius: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 0 50px rgba(255, 0, 120, .4);
+            transition: .4s;
+        }
+
+        #envelope:hover {
+            transform: scale(1.05);
+        }
+
+        #typingText {
+            text-align: left;
+            line-height: 2;
+            font-size: 17px;
+            margin-top: 25px;
+            margin-bottom: 25px;
+            white-space: pre-wrap;
+            background: rgba(0, 0, 0, 0.25);
+            padding: 30px;
+            border-radius: 20px;
+            border-left: 4px solid #ff006a;
+            box-shadow: inset 0 0 20px rgba(255, 0, 120, 0.1);
+        }
+
+        /* ==========================================
+           100 REASONS
+        ========================================== */
+        #reasonPage {
+            height: 420px;
+            overflow-y: auto;
+            padding: 25px;
+            margin-top: 25px;
+            margin-bottom: 25px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, .06);
+            text-align: left;
+            line-height: 2;
+            font-size: 17px;
+        }
+
+        /* ==========================================
+           CELEBRATION & FIREWORKS
+        ========================================== */
+        #cakeCanvas {
+            width: 100%;
+            max-width: 380px;
+            margin: auto;
+            display: block;
+        }
+
+        #fireworks {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        /* ==========================================
+           RESPONSIVE MOBILE STYLES
+        ========================================== */
+        @media(max-width: 768px) {
+            .lockContainer, .questionBox, .timerContainer, .letterContainer,
+            .reasonContainer, .celebrationContainer, .finalContainer {
+                padding: 25px;
+            }
+
+            .completion-line {
+                font-size: 32px;
+            }
+
+            #typingText {
+                font-size: 15px;
+                padding: 20px;
+                line-height: 1.8;
+            }
+
+            button {
+                width: 100%;
+            }
+        }
     </style>
 </head>
-<body class="bg-gradient-4k min-h-screen text-gray-100 flex flex-col justify-between relative overflow-hidden">
+<body>
 
-    <!-- Ambient Floating Hearts Background Canvas -->
-    <canvas id="bgCanvas" class="fixed top-0 left-0 w-full h-full pointer-events-none z-0"></canvas>
+    <div id="background">
+        <canvas id="stars"></canvas>
+        <div class="aurora"></div>
+        <div class="floating-hearts"></div>
+    </div>
 
-    <!-- SECTION 1: UNLOCK PUZZLE SCREEN -->
-    <section id="screen-lock" class="relative z-10 min-h-screen flex flex-col items-center justify-center p-4">
-        <div class="text-center mb-6">
-            <h1 class="text-3xl md:text-5xl font-cinzel font-bold text-pink-300 tracking-wider mb-2 glow-text-pink">MEND MY HEART</h1>
-            <p class="text-sm md:text-base text-pink-200/80">Drag and place all missing heart pieces to unlock our memories</p>
-        </div>
-
-        <div class="glass-card p-6 md:p-10 rounded-3xl flex flex-col items-center max-w-4xl w-full relative">
-            
-            <!-- Heart Outline / Drop Slots -->
-            <div id="heart-target-container" class="relative w-64 h-64 md:w-80 md:h-80 my-4 flex items-center justify-center">
-                <!-- SVG Heart Frame divided into 4 slots -->
-                <svg class="w-full h-full glow-heart" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M100 180 L30 110 A 45 45 0 0 1 90 40 L100 55 L110 40 A 45 45 0 0 1 170 110 Z" stroke="rgba(255, 105, 180, 0.3)" stroke-width="3" stroke-dasharray="6 6" fill="rgba(20, 5, 30, 0.5)"/>
-                </svg>
-
-                <!-- 4 Interactive Slots Overlay -->
-                <div class="absolute inset-0 grid grid-cols-2 grid-rows-2 p-8 gap-2">
-                    <div data-slot="1" class="puzzle-slot border-2 border-dashed border-pink-500/30 rounded-tl-full flex items-center justify-center text-xs text-pink-400/50">Top-Left</div>
-                    <div data-slot="2" class="puzzle-slot border-2 border-dashed border-pink-500/30 rounded-tr-full flex items-center justify-center text-xs text-pink-400/50">Top-Right</div>
-                    <div data-slot="3" class="puzzle-slot border-2 border-dashed border-pink-500/30 rounded-bl-full flex items-center justify-center text-xs text-pink-400/50">Bottom-Left</div>
-                    <div data-slot="4" class="puzzle-slot border-2 border-dashed border-pink-500/30 rounded-br-full flex items-center justify-center text-xs text-pink-400/50">Bottom-Right</div>
-                </div>
-            </div>
-
-            <!-- Scattered Drag-and-Drop Pieces -->
-            <div class="w-full mt-6">
-                <p class="text-xs text-center text-pink-300/70 mb-3">(Touch/Drag or Tap pieces to place them)</p>
-                <div id="pieces-container" class="flex flex-wrap justify-center gap-4 md:gap-8 min-h-[90px] p-4 bg-black/30 rounded-2xl border border-pink-500/20">
-                    <div draggable="true" data-piece="1" class="puzzle-piece w-16 h-16 bg-gradient-to-br from-pink-500 to-rose-600 rounded-tl-full flex items-center justify-center shadow-lg transform hover:scale-110">
-                        <i class="fa-solid fa-heart-crack text-white text-xl"></i>
-                    </div>
-                    <div draggable="true" data-piece="2" class="puzzle-piece w-16 h-16 bg-gradient-to-bl from-pink-500 to-rose-600 rounded-tr-full flex items-center justify-center shadow-lg transform hover:scale-110">
-                        <i class="fa-solid fa-heart-crack text-white text-xl"></i>
-                    </div>
-                    <div draggable="true" data-piece="3" class="puzzle-piece w-16 h-16 bg-gradient-to-tr from-pink-600 to-rose-700 rounded-bl-full flex items-center justify-center shadow-lg transform hover:scale-110">
-                        <i class="fa-solid fa-heart-crack text-white text-xl"></i>
-                    </div>
-                    <div draggable="true" data-piece="4" class="puzzle-piece w-16 h-16 bg-gradient-to-tl from-pink-600 to-rose-700 rounded-br-full flex items-center justify-center shadow-lg transform hover:scale-110">
-                        <i class="fa-solid fa-heart-crack text-white text-xl"></i>
-                    </div>
-                </div>
-            </div>
-
-            <button id="auto-solve-btn" class="mt-4 text-xs text-pink-400 underline hover:text-pink-200 transition">Auto assemble pieces ❤️</button>
+    <section id="loadingScreen">
+        <div class="loader">
+            <h1 style="font-size: 32px;">Preparing Something Special... ❤️</h1>
         </div>
     </section>
 
-    <!-- SECTION 2: INTERACTIVE QUESTION ("Do You Love Me?") -->
-    <section id="screen-question" class="hidden relative z-10 min-h-screen flex flex-col items-center justify-center p-4">
-        <!-- Floating Animated Emojis -->
-        <div class="absolute inset-0 pointer-events-none overflow-hidden">
-            <span class="absolute top-1/4 left-10 text-4xl floating" style="animation-delay: 0s;">🥰</span>
-            <span class="absolute top-1/3 right-12 text-5xl floating" style="animation-delay: 1s;">💖</span>
-            <span class="absolute bottom-1/4 left-16 text-5xl floating" style="animation-delay: 2s;">😘</span>
-            <span class="absolute bottom-1/3 right-20 text-4xl floating" style="animation-delay: 1.5s;">🌹</span>
+    <section id="lockScreen" class="hidden">
+        <div class="lockContainer">
+            <h1>❤️</h1>
+            <h2>Assemble My Heart</h2>
+            <p>Click below to bring all the floating pieces of my heart together...</p>
+
+            <div id="heartArea">
+                <div id="heartFrame"></div>
+                <div class="piece piece1"></div>
+                <div class="piece piece2"></div>
+                <div class="piece piece3"></div>
+                <div class="piece piece4"></div>
+                <div class="piece piece5"></div>
+                <div class="piece piece6"></div>
+                <div class="piece piece7"></div>
+                <div class="piece piece8"></div>
+            </div>
+
+            <button id="unlockBtn">Complete My Heart ❤️</button>
         </div>
+    </section>
 
-        <div class="glass-card p-8 md:p-14 rounded-3xl text-center max-w-xl w-full relative">
-            <div class="text-6xl mb-6 pulse-glow">🥺👉👈</div>
-            <h2 class="text-3xl md:text-5xl font-cursive font-bold text-pink-300 mb-8 leading-relaxed">
-                Do you love me, my angel?
-            </h2>
+    <div id="heartLoadingScreen" class="hidden">
+        <div class="big-glowing-heart">💖</div>
+        <div class="completion-line">"Now you have completed my heart..."</div>
+        <p style="opacity: 0.8; font-size: 16px;">Unlocking our forever story...</p>
+        <div class="loading-bar-container">
+            <div class="loading-bar-fill" id="barFill"></div>
+        </div>
+    </div>
 
-            <div class="flex flex-col md:flex-row items-center justify-center gap-6 min-h-[140px]" id="button-wrapper">
-                <button id="btn-yes" class="bg-gradient-to-r from-pink-500 to-rose-600 hover:from-pink-600 hover:to-rose-700 text-white font-bold py-4 px-10 rounded-full shadow-lg transform hover:scale-105 transition-all duration-300 text-xl tracking-wider glow-heart">
-                    YES! 💖
-                </button>
-                <button id="btn-no" class="bg-gray-700 hover:bg-gray-600 text-white font-semibold py-3 px-8 rounded-full shadow transition-all duration-300 text-lg">
-                    No 😜
-                </button>
+    <section id="loveQuestion" class="hidden">
+        <div class="questionBox">
+            <h1 style="font-size: 60px; margin-bottom: 15px;">🥺</h1>
+            <h2>Do You Love Me?</h2>
+            <p style="opacity: 0.8; margin-bottom: 20px;">Choose carefully...</p>
+            <div class="buttons">
+                <button id="yesBtn">YES ❤️</button>
+                <button id="noBtn">NO 💔</button>
             </div>
         </div>
     </section>
 
-    <!-- SECTION 3: LOADING TRANSITION -->
-    <section id="screen-loading" class="hidden relative z-10 min-h-screen flex flex-col items-center justify-center p-4">
-        <div class="glass-card p-10 rounded-3xl text-center max-w-md w-full flex flex-col items-center">
-            <div class="w-20 h-20 border-4 border-pink-500/20 border-t-pink-500 rounded-full animate-spin mb-6"></div>
-            <h3 id="loading-text" class="text-2xl font-cursive text-pink-300 mb-2">I knew it babes, you love me so much! 🥰</h3>
-            <p class="text-xs text-pink-200/60">Opening your realm of love...</p>
+    <section id="timerSection" class="hidden">
+        <div class="timerContainer">
+            <h1>❤️ Our Journey ❤️</h1>
+            <p>Since 10 February 2023</p>
+            <div id="loveTimer">
+                <div class="box"><h2 id="years">0</h2><span>Years</span></div>
+                <div class="box"><h2 id="months">0</h2><span>Months</span></div>
+                <div class="box"><h2 id="days">0</h2><span>Days</span></div>
+                <div class="box"><h2 id="hours">0</h2><span>Hours</span></div>
+                <div class="box"><h2 id="minutes">0</h2><span>Minutes</span></div>
+                <div class="box"><h2 id="seconds">0</h2><span>Seconds</span></div>
+            </div>
+            <button id="letterBtn">Read My Letter ❤️</button>
         </div>
     </section>
 
-    <!-- SECTION 4: MAIN MULTI-TAB EXPERIENCE -->
-    <section id="screen-main" class="hidden relative z-10 min-h-screen flex flex-col p-4 md:p-8 max-w-5xl mx-auto">
-        
-        <!-- Navigation Header -->
-        <nav class="glass-card rounded-2xl p-3 mb-8 flex justify-wrap justify-around gap-2 text-xs md:text-sm">
-            <button onclick="switchTab('timer')" id="tab-timer" class="tab-btn px-4 py-2 rounded-xl bg-pink-600 text-white font-semibold transition">⌛ Our Journey</button>
-            <button onclick="switchTab('letter')" id="tab-letter" class="tab-btn px-4 py-2 rounded-xl hover:bg-pink-500/20 text-pink-200 transition">✉️ Deep Love Letter</button>
-            <button onclick="switchTab('reasons')" id="tab-reasons" class="tab-btn px-4 py-2 rounded-xl hover:bg-pink-500/20 text-pink-200 transition">💯 100 Reasons</button>
-            <button onclick="switchTab('cake')" id="tab-cake" class="tab-btn px-4 py-2 rounded-xl hover:bg-pink-500/20 text-pink-200 transition">🎂 Celebration</button>
-        </nav>
-
-        <!-- TAB 1: COUNTER -->
-        <div id="content-timer" class="tab-content flex-1 flex flex-col items-center justify-center text-center">
-            <div class="glass-card p-8 md:p-12 rounded-3xl w-full max-w-3xl">
-                <h2 class="text-3xl md:text-5xl font-cinzel font-bold text-pink-300 mb-4 glow-text-pink">DAYS WE ARE TOGETHER</h2>
-                <p class="text-pink-200/70 mb-8 text-sm md:text-base">Every single second since the day we started our journey...</p>
-
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-                    <div class="bg-black/40 p-4 rounded-2xl border border-pink-500/20">
-                        <span id="days-count" class="text-3xl md:text-5xl font-bold text-pink-400 block mb-1">0</span>
-                        <span class="text-xs uppercase tracking-widest text-pink-200/60">Days</span>
-                    </div>
-                    <div class="bg-black/40 p-4 rounded-2xl border border-pink-500/20">
-                        <span id="hours-count" class="text-3xl md:text-5xl font-bold text-pink-400 block mb-1">0</span>
-                        <span class="text-xs uppercase tracking-widest text-pink-200/60">Hours</span>
-                    </div>
-                    <div class="bg-black/40 p-4 rounded-2xl border border-pink-500/20">
-                        <span id="minutes-count" class="text-3xl md:text-5xl font-bold text-pink-400 block mb-1">0</span>
-                        <span class="text-xs uppercase tracking-widest text-pink-200/60">Minutes</span>
-                    </div>
-                    <div class="bg-black/40 p-4 rounded-2xl border border-pink-500/20">
-                        <span id="seconds-count" class="text-3xl md:text-5xl font-bold text-pink-400 block mb-1">0</span>
-                        <span class="text-xs uppercase tracking-widest text-pink-200/60">Seconds</span>
-                    </div>
-                </div>
-
-                <p class="font-cursive text-2xl text-pink-300">"In you, I've found the love of my life and my closest friend."</p>
-            </div>
-        </div>
-
-        <!-- TAB 2: ANIMATED LOVE LETTER -->
-        <div id="content-letter" class="tab-content hidden flex-1 flex flex-col items-center justify-center">
-            
-            <!-- Envelope Stage -->
-            <div id="envelope-wrapper" class="cursor-pointer flex flex-col items-center" onclick="openEnvelope()">
-                <div class="relative w-72 h-48 md:w-96 md:h-64 bg-rose-900 rounded-b-xl shadow-2xl border-2 border-pink-400/40 flex items-center justify-center group transform transition hover:scale-105">
-                    <div class="absolute inset-0 bg-gradient-to-t from-rose-950 to-rose-800 rounded-b-xl"></div>
-                    <div class="z-10 text-center">
-                        <i class="fa-solid fa-envelope text-6xl text-pink-300 group-hover:scale-110 transition"></i>
-                        <p class="mt-3 text-pink-200 font-cursive text-xl">Click to Open My Heart Envelope ❤️</p>
-                    </div>
+    <section id="letterSection" class="hidden">
+        <div class="letterContainer">
+            <div id="envelope">
+                <div>
+                    <i class="fa-solid fa-envelope-open-text" style="font-size: 45px; margin-bottom: 10px;"></i>
+                    <h2>Tap to Open My Heart 💌</h2>
                 </div>
             </div>
-
-            <!-- Opened Letter Content (Typewriter Animation) -->
-            <div id="letter-content" class="hidden glass-card p-6 md:p-12 rounded-3xl w-full max-w-3xl relative my-4">
-                <div class="flex justify-between items-center mb-6 border-b border-pink-500/20 pb-4">
-                    <h3 class="font-cinzel text-2xl text-pink-300 font-bold">To My Goddess & Eternal Soulmate</h3>
-                    <i class="fa-solid fa-heart text-pink-500 text-2xl pulse-glow"></i>
-                </div>
-                
-                <div id="typewriter-body" class="text-gray-200 text-sm md:text-base leading-relaxed space-y-4 font-light max-h-[60vh] overflow-y-auto pr-2">
-                    <!-- Text inserted via JS -->
-                </div>
-            </div>
-        </div>
-
-        <!-- TAB 3: 100 REASONS -->
-        <div id="content-reasons" class="tab-content hidden flex-1 flex flex-col items-center justify-center">
-            <div class="glass-card p-6 md:p-10 rounded-3xl w-full max-w-3xl text-center">
-                <h3 class="text-2xl md:text-4xl font-cinzel font-bold text-pink-300 mb-2">100 REASONS WHY I LOVE YOU DEEPLY</h3>
-                <p class="text-pink-200/60 text-xs md:text-sm mb-6">Click Next to explore every single reason my heart belongs to you</p>
-
-                <div class="bg-black/40 border border-pink-500/30 p-8 rounded-2xl min-h-[180px] flex flex-col items-center justify-center mb-6 relative">
-                    <span id="reason-number" class="absolute top-3 left-4 text-xs font-bold text-pink-400 tracking-wider">REASON #1</span>
-                    <p id="reason-text" class="text-xl md:text-2xl font-cursive text-pink-100 px-4">Loading love reason...</p>
-                </div>
-
-                <div class="flex justify-between items-center gap-4">
-                    <button onclick="prevReason()" class="px-6 py-2 rounded-full bg-pink-500/20 hover:bg-pink-500/40 text-pink-200 transition">
-                        <i class="fa-solid fa-arrow-left mr-2"></i> Prev
-                    </button>
-                    <span id="reason-counter-badge" class="text-xs text-pink-300/80">1 / 100</span>
-                    <button onclick="nextReason()" class="px-6 py-2 rounded-full bg-pink-600 hover:bg-pink-500 text-white font-semibold shadow-lg transition">
-                        Next <i class="fa-solid fa-arrow-right ml-2"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- TAB 4: REALISTIC CAKE & FIREWORKS -->
-        <div id="content-cake" class="tab-content hidden flex-1 flex flex-col items-center justify-center text-center">
-            <div class="glass-card p-8 rounded-3xl w-full max-w-2xl flex flex-col items-center">
-                <h3 class="text-3xl md:text-4xl font-cinzel font-bold text-pink-300 mb-2 glow-text-pink">HAPPY ANNIVERSARY!</h3>
-                <p class="text-pink-200/70 text-sm mb-6">Tap/Click on our anniversary cake to blow out candles & spark fireworks! ✨</p>
-
-                <!-- 3D HTML/CSS Animated Cake -->
-                <div id="cake-interactive" class="relative my-8 cursor-pointer transform hover:scale-105 transition" onclick="triggerCelebration()">
-                    <canvas id="cakeCanvas" width="320" height="260" class="mx-auto"></canvas>
-                </div>
-
-                <button onclick="triggerCelebration()" class="px-8 py-3 rounded-full bg-gradient-to-r from-pink-500 to-rose-600 text-white font-bold shadow-xl hover:from-pink-600 hover:to-rose-700 transition tracking-wider glow-heart">
-                    🎆 SPARK FIREWORKS AGAIN
-                </button>
+            <div id="letterPaper" class="hidden">
+                <h1 style="font-family: 'Dancing Script', cursive; font-size: 45px; color: #ff7ab8;">To My Everything ❤️</h1>
+                <div id="typingText"></div>
+                <button id="reasonBtn">See 100 Reasons Why I Love You ❤️</button>
             </div>
         </div>
     </section>
 
-    <!-- Fireworks Canvas Layer -->
-    <canvas id="fireworksCanvas" class="fixed inset-0 pointer-events-none z-50"></canvas>
+    <section id="reasonSection" class="hidden">
+        <div class="reasonContainer">
+            <h1>💖 100 Reasons Why I Love You 💖</h1>
+            <div id="reasonPage"></div>
+            <button id="celebrationBtn">Celebrate Together 🎉</button>
+        </div>
+    </section>
+
+    <section id="celebrationSection" class="hidden">
+        <canvas id="fireworks"></canvas>
+        <div class="celebrationContainer">
+            <h1>Happy Anniversary ❤️</h1>
+            <canvas id="cakeCanvas"></canvas>
+            <button id="replayBtn">Our Final Promise ♾️</button>
+        </div>
+    </section>
+
+    <section id="finalSection" class="hidden">
+        <div class="finalContainer">
+            <h1 style="font-size: 50px;">Forever Together ❤️</h1>
+            <p style="font-size: 20px; line-height: 1.8; margin-top: 15px;">"Every heartbeat of mine belongs to you."</p>
+            <h2 style="font-size: 36px; color: #ff7ab8; margin-top: 30px;">I Love You Forever ❤️</h2>
+        </div>
+    </section>
 
     <script>
-        /* ================= STATE MANAGEMENT & SETUP ================= */
-        // Set your proposal/anniversary start date here:
-        const START_DATE = new Date("2022-02-14T00:00:00"); // Change to your actual date if needed
+        /* ==========================================
+           DOM ELEMENTS & AUDIO
+        ========================================== */
+        const loadingScreen = document.getElementById('loadingScreen');
+        const lockScreen = document.getElementById('lockScreen');
+        const heartLoadingScreen = document.getElementById('heartLoadingScreen');
+        const loveQuestion = document.getElementById('loveQuestion');
+        const timerSection = document.getElementById('timerSection');
+        const letterSection = document.getElementById('letterSection');
+        const reasonSection = document.getElementById('reasonSection');
+        const celebrationSection = document.getElementById('celebrationSection');
+        const finalSection = document.getElementById('finalSection');
 
-        let placedPieces = 0;
-        let noClickCount = 0;
-        let currentReasonIdx = 0;
+        const unlockBtn = document.getElementById('unlockBtn');
+        const yesBtn = document.getElementById('yesBtn');
+        const noBtn = document.getElementById('noBtn');
+        const letterBtn = document.getElementById('letterBtn');
+        const envelope = document.getElementById('envelope');
+        const letterPaper = document.getElementById('letterPaper');
+        const typingText = document.getElementById('typingText');
+        const reasonBtn = document.getElementById('reasonBtn');
+        const reasonPage = document.getElementById('reasonPage');
+        const celebrationBtn = document.getElementById('celebrationBtn');
+        const replayBtn = document.getElementById('replayBtn');
+        const bgMusic = document.getElementById('bgMusic');
 
-        /* ================= AMBIENT BACKGROUND PARTICLES ================= */
-        const bgCanvas = document.getElementById('bgCanvas');
-        const bgCtx = bgCanvas.getContext('2d');
-        let bgHearts = [];
-
-        function resizeBgCanvas() {
-            bgCanvas.width = window.innerWidth;
-            bgCanvas.height = window.innerHeight;
-        }
-        window.addEventListener('resize', resizeBgCanvas);
-        resizeBgCanvas();
-
-        class BackgroundHeart {
-            constructor() {
-                this.reset();
-            }
-            reset() {
-                this.x = Math.random() * bgCanvas.width;
-                this.y = bgCanvas.height + 20;
-                this.size = Math.random() * 12 + 6;
-                this.speed = Math.random() * 1.5 + 0.5;
-                this.opacity = Math.random() * 0.5 + 0.2;
-                this.swing = Math.random() * 0.05;
-                this.swingAngle = Math.random() * Math.PI * 2;
-            }
-            update() {
-                this.y -= this.speed;
-                this.swingAngle += this.swing;
-                this.x += Math.sin(this.swingAngle) * 0.5;
-                if (this.y < -20) this.reset();
-            }
-            draw() {
-                bgCtx.save();
-                bgCtx.globalAlpha = this.opacity;
-                bgCtx.fillStyle = '#ff2a8d';
-                bgCtx.beginPath();
-                const x = this.x, y = this.y, s = this.size;
-                bgCtx.moveTo(x, y);
-                bgCtx.bezierCurveTo(x - s/2, y - s/2, x - s, y + s/3, x, y + s);
-                bgCtx.bezierCurveTo(x + s, y + s/3, x + s/2, y - s/2, x, y);
-                bgCtx.fill();
-                bgCtx.restore();
-            }
+        function switchSection(hideElem, showElem) {
+            if (hideElem) hideElem.classList.add('hidden');
+            if (showElem) showElem.classList.remove('hidden');
         }
 
-        for (let i = 0; i < 35; i++) {
-            bgHearts.push(new BackgroundHeart());
+        /* ==========================================
+           1. ANIMATED BACKGROUND
+        ========================================== */
+        function initBackground() {
+            const canvas = document.getElementById('stars');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+
+            function resizeCanvas() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+            resizeCanvas();
+            window.addEventListener('resize', resizeCanvas);
+
+            const stars = Array.from({ length: 80 }, () => ({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                radius: Math.random() * 1.5 + 0.5,
+                alpha: Math.random(),
+                speed: Math.random() * 0.02 + 0.005
+            }));
+
+            function drawStars() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                stars.forEach(star => {
+                    star.alpha += star.speed;
+                    if (star.alpha > 1 || star.alpha < 0) star.speed = -star.speed;
+                    ctx.fillStyle = `rgba(255, 255, 255, ${Math.abs(star.alpha)})`;
+                    ctx.beginPath();
+                    ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+                    ctx.fill();
+                });
+                requestAnimationFrame(drawStars);
+            }
+            drawStars();
+
+            const heartContainer = document.querySelector('.floating-hearts');
+            if (heartContainer) {
+                setInterval(() => {
+                    const heart = document.createElement('span');
+                    heart.innerHTML = '❤️';
+                    heart.style.left = Math.random() * 100 + 'vw';
+                    heart.style.animationDuration = (Math.random() * 3 + 4) + 's';
+                    heartContainer.appendChild(heart);
+                    setTimeout(() => heart.remove(), 7000);
+                }, 800);
+            }
         }
 
-        function animateBg() {
-            bgCtx.clearRect(0, 0, bgCanvas.width, bgCanvas.height);
-            bgHearts.forEach(h => {
-                h.update();
-                h.draw();
-            });
-            requestAnimationFrame(animateBg);
-        }
-        animateBg();
-
-        /* ================= SCREEN 1: DRAG & DROP PUZZLE ================= */
-        const pieces = document.querySelectorAll('.puzzle-piece');
-        const slots = document.querySelectorAll('.puzzle-slot');
-
-        pieces.forEach(piece => {
-            piece.addEventListener('dragstart', (e) => {
-                e.dataTransfer.setData('text/plain', piece.dataset.piece);
-            });
-            // Touch support for mobile devices
-            piece.addEventListener('click', () => {
-                autoPlacePiece(piece);
-            });
+        window.addEventListener('DOMContentLoaded', () => {
+            initBackground();
+            setTimeout(() => { switchSection(loadingScreen, lockScreen); }, 2000);
         });
 
-        slots.forEach(slot => {
-            slot.addEventListener('dragover', (e) => e.preventDefault());
-            slot.addEventListener('drop', (e) => {
-                e.preventDefault();
-                const pieceId = e.dataTransfer.getData('text/plain');
-                if (slot.dataset.slot === pieceId) {
-                    const pieceEl = document.querySelector(`.puzzle-piece[data-piece="${pieceId}"]`);
-                    slot.appendChild(pieceEl);
-                    slot.classList.add('border-pink-500', 'bg-pink-500/20');
-                    pieceEl.classList.remove('puzzle-piece');
-                    placedPieces++;
-                    checkLockUnlocked();
+        /* ==========================================
+           2. HEART ASSEMBLY & MUSIC TRIGGER
+        ========================================== */
+        if (unlockBtn) {
+            unlockBtn.addEventListener('click', () => {
+                // Play music
+                if (bgMusic) {
+                    bgMusic.volume = 0.5;
+                    bgMusic.play().catch(e => console.log("Audio play allowed on click", e));
                 }
-            });
-        });
 
-        function autoPlacePiece(pieceEl) {
-            const pId = pieceEl.dataset.piece;
-            const targetSlot = document.querySelector(`.puzzle-slot[data-slot="${pId}"]`);
-            if (targetSlot && !targetSlot.hasChildNodes()) {
-                targetSlot.appendChild(pieceEl);
-                targetSlot.classList.add('border-pink-500', 'bg-pink-500/20');
-                placedPieces++;
-                checkLockUnlocked();
-            }
-        }
+                // Snap puzzle pieces
+                const pieces = document.querySelectorAll('.piece');
+                const heartFrame = document.getElementById('heartFrame');
 
-        document.getElementById('auto-solve-btn').addEventListener('click', () => {
-            pieces.forEach(piece => autoPlacePiece(piece));
-        });
+                pieces.forEach(p => p.classList.add('snapped'));
 
-        function checkLockUnlocked() {
-            if (placedPieces >= 4) {
                 setTimeout(() => {
-                    document.getElementById('screen-lock').classList.add('hidden');
-                    document.getElementById('screen-question').classList.remove('hidden');
-                }, 600);
-            }
-        }
+                    heartFrame.classList.add('assembled');
+                }, 500);
 
-        /* ================= SCREEN 2: QUESTION ("Do You Love Me?") ================= */
-        const btnYes = document.getElementById('btn-yes');
-        const btnNo = document.getElementById('btn-no');
+                // Show Big Completion Screen
+                setTimeout(() => {
+                    switchSection(lockScreen, null);
+                    heartLoadingScreen.classList.remove('hidden');
 
-        btnNo.addEventListener('click', () => {
-            noClickCount++;
-            if (noClickCount === 1) {
-                btnNo.style.transform = 'scale(0.7)';
-                btnYes.style.transform = 'scale(1.3)';
-            } else if (noClickCount === 2) {
-                btnNo.style.transform = 'scale(0.4)';
-                btnYes.style.transform = 'scale(1.7)';
-            } else {
-                btnNo.style.display = 'none';
-                btnYes.style.transform = 'scale(2.1)';
-            }
-        });
+                    const barFill = document.getElementById('barFill');
+                    setTimeout(() => { barFill.style.width = '100%'; }, 100);
 
-        btnYes.addEventListener('click', () => {
-            document.getElementById('screen-question').classList.add('hidden');
-            document.getElementById('screen-loading').classList.remove('hidden');
-            
-            setTimeout(() => {
-                document.getElementById('screen-loading').classList.add('hidden');
-                document.getElementById('screen-main').classList.remove('hidden');
-                startCounter();
-                renderCake();
-            }, 2800);
-        });
-
-        /* ================= SCREEN 4: TAB SWITCHING ================= */
-        function switchTab(tabName) {
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
-            document.querySelectorAll('.tab-btn').forEach(btn => {
-                btn.classList.remove('bg-pink-600', 'text-white');
-                btn.classList.add('hover:bg-pink-500/20', 'text-pink-200');
+                    setTimeout(() => {
+                        heartLoadingScreen.classList.add('hidden');
+                        loveQuestion.classList.remove('hidden');
+                    }, 3500);
+                }, 1200);
             });
-
-            document.getElementById(`content-${tabName}`).classList.remove('hidden');
-            const activeBtn = document.getElementById(`tab-${tabName}`);
-            activeBtn.classList.add('bg-pink-600', 'text-white');
-            activeBtn.classList.remove('hover:bg-pink-500/20', 'text-pink-200');
         }
 
-        /* ================= COUNTER SYSTEM ================= */
-        function startCounter() {
+        /* ==========================================
+           3. RUNAWAY "NO" BUTTON
+        ========================================== */
+        if (noBtn) {
+            const escapeNoButton = (e) => {
+                e.preventDefault();
+                const padding = 50;
+                const x = Math.random() * (window.innerWidth - noBtn.offsetWidth - padding * 2) + padding;
+                const y = Math.random() * (window.innerHeight - noBtn.offsetHeight - padding * 2) + padding;
+
+                noBtn.style.position = 'fixed';
+                noBtn.style.left = `${x}px`;
+                noBtn.style.top = `${y}px`;
+                noBtn.style.zIndex = '9999';
+            };
+
+            noBtn.addEventListener('mouseover', escapeNoButton);
+            noBtn.addEventListener('touchstart', escapeNoButton);
+        }
+
+        if (yesBtn) {
+            yesBtn.addEventListener('click', () => {
+                switchSection(loveQuestion, timerSection);
+                startTimer();
+            });
+        }
+
+        /* ==========================================
+           4. LIVE TIME COUNTER (Since Feb 10, 2023)
+        ========================================== */
+        function startTimer() {
+            const startDate = new Date("February 10, 2023 00:00:00").getTime();
+
             function update() {
-                const now = new Date();
-                const diff = now - START_DATE;
+                const now = new Date().getTime();
+                const diff = now - startDate;
+                if (diff < 0) return;
 
-                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-                const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-                const minutes = Math.floor((diff / 1000 / 60) % 60);
-                const seconds = Math.floor((diff / 1000) % 60);
+                const years = Math.floor(diff / (1000 * 60 * 60 * 24 * 365.25));
+                const months = Math.floor((diff % (1000 * 60 * 60 * 24 * 365.25)) / (1000 * 60 * 60 * 24 * 30.44));
+                const days = Math.floor((diff % (1000 * 60 * 60 * 24 * 30.44)) / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
-                document.getElementById('days-count').innerText = days;
-                document.getElementById('hours-count').innerText = hours;
-                document.getElementById('minutes-count').innerText = minutes;
-                document.getElementById('seconds-count').innerText = seconds;
+                document.getElementById('years').innerText = years;
+                document.getElementById('months').innerText = months;
+                document.getElementById('days').innerText = days;
+                document.getElementById('hours').innerText = hours;
+                document.getElementById('minutes').innerText = minutes;
+                document.getElementById('seconds').innerText = seconds;
             }
+
             update();
             setInterval(update, 1000);
         }
 
-        /* ================= LOVE LETTER TYPEWRITER ================= */
-        const letterText = `My Dearest Angel,\n\nLooking back at where we started, from those simple text messages to becoming best friends, and now standing as true lovers, this journey has been nothing short of a miracle. You are my truest, most unexpected and expected god gift.\n\nYour loyalty to me is unmatched. Your patience, your incredible strength of character, and your breathtaking beauty make you look like a pure angel sent from above. In every way, you are also my mother after my mother—caring for my soul, guiding me with warmth and unending love.\n\nI promise you today with all my heart: You are my EVERYTHING. No woman in this world or universe could ever replace your position in my heart. You are the only one I want—forever and always. My love for you is absolute, and every day with you is my greatest blessing.\n\nForever Yours, ❤️`;
-
-        let letterOpened = false;
-        function openEnvelope() {
-            if (letterOpened) return;
-            letterOpened = true;
-            document.getElementById('envelope-wrapper').classList.add('hidden');
-            document.getElementById('letter-content').classList.remove('hidden');
-
-            const container = document.getElementById('typewriter-body');
-            let idx = 0;
-
-            function typeNextChar() {
-                if (idx < letterText.length) {
-                    const char = letterText.charAt(idx);
-                    if (char === '\n') {
-                        container.innerHTML += '<br/>';
-                    } else {
-                        container.innerHTML += char;
-                    }
-                    idx++;
-                    setTimeout(typeNextChar, 25);
-                }
-            }
-            typeNextChar();
+        if (letterBtn) {
+            letterBtn.addEventListener('click', () => {
+                switchSection(timerSection, letterSection);
+            });
         }
 
-        /* ================= 100 REASONS ARRAY & LOGIC ================= */
-        const reasons = [
-            "Your breathtaking eyes that light up my darkest days.",
-            "Your gentle and tender lips that I love kissing.",
-            "The unmatched warmth and caring nature you show me every day.",
-            "Your loyalty—you stand by my side through everything.",
-            "Your incredible patience when dealing with my imperfections.",
-            "Your heart of gold that inspires me to be a better man.",
-            "How you look like a literal angel when you smile.",
-            "The way you care for me like a mother after my mother.",
-            "Our early text message conversations that started our magic.",
-            "Your beautiful character that radiates purity and kindness.",
-            "How safe and complete I feel whenever I hold your hand.",
-            "The way your laugh brightens up the entire room.",
-            "Because you are my God-given miracle.",
-            "How deep and unconditional your love for me is.",
-            "The cute little ways you express affection.",
-            "Because no woman in the universe could ever replace you.",
-            "Your dedication to making our relationship strong.",
-            "How you understand me even without words.",
-            "Your heavenly soft touch.",
-            "How you make every mundane moment feel special.",
-            "Your unique intelligence and wisdom.",
-            "The beautiful soul you possess.",
-            "How you respect and honor our love bond.",
-            "The way you look at me with total adoration.",
-            "Your gentle voice that calms my heart.",
-            "Because my heart belongs to you and only you.",
-            "How supportive you are of all my dreams.",
-            "Your sense of humor that makes me laugh endlessly.",
-            "How you hold me close when I need warmth.",
-            "Because you are my best friend and lover in one.",
-            "The effortless grace you carry everywhere.",
-            "How you make our house feel like a loving home.",
-            "The endless patience you show toward me.",
-            "Your cute expression when you get playful.",
-            "The way you motivate me to reach for the stars.",
-            "Because you are my soulmate chosen by destiny.",
-            "Your sincerity in everything you do.",
-            "How comfortable I feel sharing all my secrets with you.",
-            "Your soft hair and how amazing it smells.",
-            "Because choosing you was the best decision of my life.",
-            "Your beautiful morals and strong values.",
-            "How you remember small details about us.",
-            "The romantic sparks that never fade between us.",
-            "Your loving hugs that melt away all my stress.",
-            "Because you are my dream come true.",
-            "Your beautiful style and elegance.",
-            "How you bring peace into my chaotic mind.",
-            "The way you pray and wish the best for us.",
-            "Your unconditional loyalty that gives me peace.",
-            "Because life without you is unimaginable.",
-            "How deeply caring you are when I am unwell.",
-            "The sweet pet names you call me.",
-            "Your cute little pout when you want attention.",
-            "How you make me feel like the luckiest man alive.",
-            "Because you accept me for who I truly am.",
-            "The magical connection we share since day one.",
-            "Your radiant beauty that takes my breath away.",
-            "How you treat my family with utmost love and respect.",
-            "Your warm hugs in the cold weather.",
-            "Because every day with you is a gift from God.",
-            "Your soothing presence in my life.",
-            "How you celebrate my smallest victories.",
-            "The passion and devotion in your eyes.",
-            "Because you are my strength when I am weak.",
-            "Your beautiful personality that shines brighter than stars.",
-            "The cute sound of your laughter.",
-            "How you always listen to me attentively.",
-            "Because you make me want to build an entire future with you.",
-            "Your sweetness that never wanes.",
-            "How you always find a way to make me smile.",
-            "Because you are my forever and my always.",
-            "Your adorable reactions when I surprise you.",
-            "How deeply loyal and true your heart is.",
-            "The loving touch of your hands in mine.",
-            "Because our love story is my favorite story.",
-            "Your strength and courage in hard times.",
-            "How you fill my heart with boundless joy.",
-            "Your loving care that feels like home.",
-            "Because I fall deeper in love with you every single day.",
-            "Your sparkling eyes when you are happy.",
-            "How you balance my life with your love.",
-            "Because you are my heart's ultimate desire.",
-            "Your soft cheeks that blush so beautifully.",
-            "How you always bring out the best in me.",
-            "Because no one else could ever hold my heart like you.",
-            "Your pure heart free of malice.",
-            "The sweet memories we've built together so far.",
-            "How you stand by me through thick and thin.",
-            "Your unwavering trust in me.",
-            "Because you are my queen and my goddess.",
-            "Your lovely aesthetic and artistic soul.",
-            "The way you make my heart skip a beat even now.",
-            "Your comforting words when I feel down.",
-            "Because you are the answer to all my prayers.",
-            "Your beautiful fashion sense and charm.",
-            "How effortlessly loving you are.",
-            "Because you hold the key to my soul.",
-            "Your endless generosity and kindness.",
-            "Because I promise to love you for eternity.",
-            "Because you are my EVERYTHING, my ultimate love forever!"
+        /* ==========================================
+           5. NEW DEEP & EMOTIONAL LOVE LETTER (No Dates)
+        ========================================== */
+        const loveLetterText = `My Dearest Love,
+
+When I reflect on our story, my heart fills with a warmth that words can barely hold. What began as a simple, unexpected friendship grew quietly into the deepest, most sacred love of my life. I never saw it coming, yet looking back now, loving you feels like the most natural, expected destination my soul was always meant to find.
+
+Every single step of our journey together has been incredible. You possess a character so rare and beautiful—a pure soul filled with kindness, dignity, and grace. Your loyalty to me is unwavering, a quiet strength that gives me absolute peace in a chaotic world. 
+
+Beyond everything, it is your caring heart that leaves me in awe every single day. After my own mother, you are the only person who has ever cared for me with such selfless warmth, protective affection, and motherly gentleness. You look out for me, shield me from worries, comfort my doubts, and care for my well-being in a way that heals parts of me I didn't even know needed healing.
+
+In you, I found my best friend, my motherly warmth, my anchor, and my eternal love. Thank you for being yourself, for staying loyal, and for wrapping my life in your love.
+
+Forever and always, yours. ❤️`;
+
+        let letterIndex = 0;
+
+        function typeWriter() {
+            if (letterIndex < loveLetterText.length) {
+                typingText.innerHTML += loveLetterText.charAt(letterIndex);
+                letterIndex++;
+                setTimeout(typeWriter, 25);
+            }
+        }
+
+        if (envelope) {
+            envelope.addEventListener('click', () => {
+                envelope.style.display = 'none';
+                if (letterPaper) letterPaper.classList.remove('hidden');
+                typeWriter();
+            });
+        }
+
+        if (reasonBtn) {
+            reasonBtn.addEventListener('click', () => {
+                switchSection(letterSection, reasonSection);
+                populate100Reasons();
+            });
+        }
+
+        /* ==========================================
+           6. 100 REASONS WHY I LOVE YOU
+        ========================================== */
+        const hundredReasons = [
+            "Your warm, beautiful smile that brightens up my darkest days.",
+            "How safe and complete I feel whenever I'm with you.",
+            "Your deeply caring and protective nature.",
+            "How you guide and care for me like a mother after my mother.",
+            "The incredible character and values you uphold every day.",
+            "Your unwavering loyalty to us.",
+            "How our unexpected friendship grew into my greatest love.",
+            "Your sweet and comforting voice that calms my heart.",
+            "How you remember every little detail about my preferences.",
+            "Your endless patience and gentle kindness.",
+            "The way you look at me like I'm your whole world.",
+            "How effortlessly you make me want to be a better person.",
+            "Your unconditional support for my dreams and ambitions.",
+            "The peace I feel just sitting in silence next to you.",
+            "How you cheer me up when life gets overwhelming.",
+            "Your gentle touch that always reassures me.",
+            "The adorable little habits you have when you're focused.",
+            "Your incredible strength and emotional wisdom.",
+            "The warm hugs that feel like coming home.",
+            "How deeply you love and protect those close to your heart.",
+            "The beautiful memories we've built together.",
+            "Your honest and forgiving heart.",
+            "How you hold my hand tightly when we walk.",
+            "The way you celebrate my happiness as your own.",
+            "How you fix my bad mood with just a simple look.",
+            "Your unique perspective on life that always inspires me.",
+            "How genuinely interested you are in my day.",
+            "The cozy feeling of being wrapped in your presence.",
+            "Your endless kindness toward everyone around you.",
+            "How every moment with you feels like a blessing.",
+            "Your absolute honesty and integrity.",
+            "How you ground me when I feel anxious.",
+            "How proud I am to have you in my life.",
+            "The sweet way you say my name.",
+            "How deeply you respect and cherish our bond.",
+            "Your infectious enthusiasm when talking about things you love.",
+            "The way you make me feel valued and cherished every day.",
+            "How easily you turn ordinary days into special memories.",
+            "Your unwavering loyalty during difficult times.",
+            "How you love me even on my toughest days.",
+            "Your cute little giggles when something amuses you.",
+            "How you inspire me to see the beauty in small things.",
+            "Your comforting presence when life gets stressful.",
+            "The way your hand fits perfectly in mine.",
+            "Your thoughtful actions that always put me first.",
+            "How you make time for us no matter how busy life gets.",
+            "The way you make me feel completely safe to be myself.",
+            "How you always find a reason to remain positive.",
+            "Your gentle words of encouragement when I doubt myself.",
+            "How you make my heart skip a beat even after all this time.",
+            "How you hold my heart so carefully and tenderly.",
+            "The late-night conversations we share under the stars.",
+            "Your calm demeanor during life's storms.",
+            "The way you respect my thoughts and opinions.",
+            "How you make me feel like the luckiest person alive.",
+            "Your sweet acts of kindness when I least expect them.",
+            "The way you protect and care for our happiness.",
+            "How you turn simple moments into romantic memories.",
+            "Your warm heart that never hesitates to comfort me.",
+            "The way you understand me without saying a word.",
+            "How you bring light into every room you enter.",
+            "Your wonderful, positive energy.",
+            "How you always keep your promises.",
+            "Your loving nature that surrounds me like a warm blanket.",
+            "How you believe in me even when I lose faith in myself.",
+            "Your comforting words that act as medicine for my heart.",
+            "The beautiful life and future we are building together.",
+            "How you make my soul feel completely at peace.",
+            "Your selfless nature and willingness to give.",
+            "How every romantic song reminds me of you.",
+            "The simple fact that you exist and chose to love me.",
+            "Because loving you is the best decision I have ever made."
         ];
 
-        function updateReasonCard() {
-            document.getElementById('reason-number').innerText = `REASON #${currentReasonIdx + 1}`;
-            document.getElementById('reason-text').innerText = `"${reasons[currentReasonIdx]}"`;
-            document.getElementById('reason-counter-badge').innerText = `${currentReasonIdx + 1} / ${reasons.length}`;
-        }
-        updateReasonCard();
-
-        function nextReason() {
-            currentReasonIdx = (currentReasonIdx + 1) % reasons.length;
-            updateReasonCard();
-        }
-
-        function prevReason() {
-            currentReasonIdx = (currentReasonIdx - 1 + reasons.length) % reasons.length;
-            updateReasonCard();
+        function populate100Reasons() {
+            if (!reasonPage) return;
+            reasonPage.innerHTML = "";
+            hundredReasons.forEach((reason, index) => {
+                const item = document.createElement('p');
+                item.style.marginBottom = "14px";
+                item.innerHTML = `<strong style="color: #ff7ab8;">${index + 1}.</strong> ${reason}`;
+                reasonPage.appendChild(item);
+            });
         }
 
-        /* ================= REALISTIC CANVAS CAKE RENDER ================= */
-        function renderCake() {
-            const canvas = document.getElementById('cakeCanvas');
+        if (celebrationBtn) {
+            celebrationBtn.addEventListener('click', () => {
+                switchSection(reasonSection, celebrationSection);
+                startFireworks();
+                drawCake();
+            });
+        }
+
+        /* ==========================================
+           7. FIREWORKS & CAKE
+        ========================================== */
+        function startFireworks() {
+            const canvas = document.getElementById('fireworks');
+            if (!canvas) return;
             const ctx = canvas.getContext('2d');
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
 
-            // Cake Stand
-            ctx.fillStyle = "#e0e0e0";
-            ctx.beginPath();
-            ctx.ellipse(160, 220, 110, 20, 0, 0, Math.PI * 2);
-            ctx.fill();
+            let particles = [];
 
-            // Cake Tier 1 (Bottom)
-            ctx.fillStyle = "#800e3f";
-            ctx.fillRect(70, 150, 180, 50);
-            ctx.fillStyle = "#b81d5b";
-            ctx.beginPath();
-            ctx.ellipse(160, 150, 90, 15, 0, 0, Math.PI * 2);
-            ctx.fill();
+            function createExplosion(x, y) {
+                const particleCount = 45;
+                const color = `hsl(${Math.random() * 360}, 100%, 65%)`;
 
-            // Cake Tier 2 (Top)
-            ctx.fillStyle = "#a81350";
-            ctx.fillRect(95, 100, 130, 50);
-            ctx.fillStyle = "#e83e8c";
-            ctx.beginPath();
-            ctx.ellipse(160, 100, 65, 12, 0, 0, Math.PI * 2);
-            ctx.fill();
-
-            // Cream Drips
-            ctx.fillStyle = "#ffffff";
-            ctx.beginPath();
-            ctx.arc(110, 105, 8, 0, Math.PI);
-            ctx.arc(130, 105, 10, 0, Math.PI);
-            ctx.arc(150, 105, 7, 0, Math.PI);
-            ctx.arc(170, 105, 9, 0, Math.PI);
-            ctx.arc(190, 105, 8, 0, Math.PI);
-            ctx.fill();
-
-            // Candle
-            ctx.fillStyle = "#fff";
-            ctx.fillRect(156, 65, 8, 30);
-
-            // Flame Animation
-            let flameSize = 8;
-            function drawFlame() {
-                ctx.clearRect(145, 35, 30, 30);
-                flameSize = 7 + Math.random() * 4;
-                ctx.fillStyle = "#ff9800";
-                ctx.beginPath();
-                ctx.arc(160, 55, flameSize, 0, Math.PI * 2);
-                ctx.fill();
-
-                ctx.fillStyle = "#ffeb3b";
-                ctx.beginPath();
-                ctx.arc(160, 55, flameSize * 0.5, 0, Math.PI * 2);
-                ctx.fill();
-
-                requestAnimationFrame(drawFlame);
-            }
-            drawFlame();
-        }
-
-        /* ================= REALISTIC FIREWORKS ENGINE ================= */
-        const fwCanvas = document.getElementById('fireworksCanvas');
-        const fwCtx = fwCanvas.getContext('2d');
-        let fwParticles = [];
-
-        function resizeFwCanvas() {
-            fwCanvas.width = window.innerWidth;
-            fwCanvas.height = window.innerHeight;
-        }
-        window.addEventListener('resize', resizeFwCanvas);
-        resizeFwCanvas();
-
-        class FireworkParticle {
-            constructor(x, y, color) {
-                this.x = x;
-                this.y = y;
-                this.color = color;
-                const angle = Math.random() * Math.PI * 2;
-                const speed = Math.random() * 8 + 2;
-                this.vx = Math.cos(angle) * speed;
-                this.vy = Math.sin(angle) * speed;
-                this.alpha = 1;
-                this.friction = 0.96;
-                this.gravity = 0.12;
-            }
-            update() {
-                this.vx *= this.friction;
-                this.vy *= this.friction;
-                this.vy += this.gravity;
-                this.x += this.vx;
-                this.y += this.vy;
-                this.alpha -= 0.015;
-            }
-            draw() {
-                fwCtx.save();
-                fwCtx.globalAlpha = this.alpha;
-                fwCtx.fillStyle = this.color;
-                fwCtx.beginPath();
-                fwCtx.arc(this.x, this.y, 3, 0, Math.PI * 2);
-                fwCtx.fill();
-                fwCtx.restore();
-            }
-        }
-
-        function createExplosion(x, y) {
-            const colors = ['#ff2a8d', '#ff7300', '#00e5ff', '#ffeb3b', '#e040fb', '#ffffff'];
-            const count = 80;
-            for (let i = 0; i < count; i++) {
-                const color = colors[Math.floor(Math.random() * colors.length)];
-                fwParticles.push(new FireworkParticle(x, y, color));
-            }
-        }
-
-        function animateFireworks() {
-            fwCtx.clearRect(0, 0, fwCanvas.width, fwCanvas.height);
-            for (let i = fwParticles.length - 1; i >= 0; i--) {
-                fwParticles[i].update();
-                fwParticles[i].draw();
-                if (fwParticles[i].alpha <= 0) {
-                    fwParticles.splice(i, 1);
+                for (let i = 0; i < particleCount; i++) {
+                    const angle = (Math.PI * 2 / particleCount) * i;
+                    const speed = Math.random() * 6 + 2;
+                    particles.push({
+                        x: x, y: y,
+                        vx: Math.cos(angle) * speed,
+                        vy: Math.sin(angle) * speed,
+                        alpha: 1, color: color
+                    });
                 }
             }
-            requestAnimationFrame(animateFireworks);
-        }
-        animateFireworks();
 
-        function triggerCelebration() {
-            // Trigger 5 fireworks bursts across the screen
-            const width = window.innerWidth;
-            const height = window.innerHeight;
+            function animate() {
+                ctx.fillStyle = 'rgba(5, 5, 16, 0.2)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            for (let i = 0; i < 6; i++) {
-                setTimeout(() => {
-                    const x = Math.random() * (width * 0.8) + width * 0.1;
-                    const y = Math.random() * (height * 0.5) + height * 0.1;
-                    createExplosion(x, y);
-                }, i * 300);
-            }
+                if (Math.random() < 0.08) {
+                    createExplosion(Math.random() * canvas.width, Math.random() * (canvas.height * 0.6));
+                }
 
-            // Confetti Cannon
-            if (typeof confetti === 'function') {
-                confetti({
-                    particleCount: 120,
-                    spread: 80,
-                    origin: { y: 0.6 }
+                particles.forEach((p, idx) => {
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    p.alpha -= 0.015;
+                    ctx.globalAlpha = Math.max(0, p.alpha);
+                    ctx.fillStyle = p.color;
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, 3, 0, Math.PI * 2);
+                    ctx.fill();
+                    if (p.alpha <= 0) particles.splice(idx, 1);
                 });
+
+                ctx.globalAlpha = 1;
+                requestAnimationFrame(animate);
             }
+            animate();
+        }
+
+        function drawCake() {
+            const canvas = document.getElementById('cakeCanvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            canvas.width = 300;
+            canvas.height = 200;
+
+            ctx.fillStyle = '#ff6ea8';
+            ctx.fillRect(75, 110, 150, 60);
+
+            ctx.fillStyle = '#ffb3d1';
+            ctx.fillRect(95, 70, 110, 40);
+
+            ctx.fillStyle = '#ffffff';
+            ctx.beginPath();
+            ctx.arc(105, 110, 10, 0, Math.PI * 2);
+            ctx.arc(125, 110, 10, 0, Math.PI * 2);
+            ctx.arc(145, 110, 10, 0, Math.PI * 2);
+            ctx.arc(165, 110, 10, 0, Math.PI * 2);
+            ctx.arc(185, 110, 10, 0, Math.PI * 2);
+            ctx.fill();
+
+            ctx.fillStyle = '#fff';
+            ctx.fillRect(145, 40, 10, 30);
+
+            ctx.fillStyle = '#ffcc00';
+            ctx.beginPath();
+            ctx.arc(150, 32, 7, 0, Math.PI * 2);
+            ctx.fill();
+        }
+
+        if (replayBtn) {
+            replayBtn.addEventListener('click', () => {
+                switchSection(celebrationSection, finalSection);
+            });
         }
     </script>
 </body>
-</html>
+    </html>
