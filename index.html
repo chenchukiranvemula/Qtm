@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To My Eternal Love ❤️</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Poppins:wght@300;400;600;700&family=Cinzel:wght@500;700&display=swap');
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #0f051d;
+            color: #fff;
+            overflow-x: hidden;
+            user-select: none;
+        }
+
+        .font-cursive { font-family: 'Dancing Script', cursive; }
+        .font-cinzel { font-family: 'Cinzel', serif; }
+
+        /* Animated Glowing Background */
+        .bg-gradient-4k {
+            background: radial-gradient(circle at 50% 50%, #2a0833 0%, #0d0118 70%, #05000a 100%);
+            background-size: 200% 200%;
+            animation: gradientPulse 12s ease infinite;
+        }
+
+        @keyframes gradientPulse {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Glassmorphism */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), inset 0 0 15px rgba(255, 105, 180, 0.1);
+        }
+
+        /* Neon Glow Effects */
+        .glow-text-pink {
+            text-shadow: 0 0 10px #ff2a8d, 0 0 20px #ff2a8d, 0 0 40px #ff2a8d;
+        }
+        .glow-heart {
+            filter: drop-shadow(0 0 15px rgba(255, 42, 141, 0.8));
+        }
+
+        /* Puzzle Piece Styling */
+        .puzzle-piece {
+            cursor: grab;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .puzzle-piece:active {
+            cursor: grabbing;
+        }
+        .puzzle-slot {
+            transition: all 0.3s ease;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: rgba(15, 5, 29, 0.8); }
+        ::-webkit-scrollbar-thumb { background: #ff2a8d; border-radius: 10px; }
+
+        /* Floating Animation */
+        @keyframes float {
+            0% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-12px) rotate(3deg); }
+            100% { transform: translateY(0px) rotate(0deg); }
+        }
+        .floating { animation: float 4s ease-in-out infinite; }
+
+        /* Pulse glow */
+        @keyframes pulseGlow {
+            0%, 100% { transform: scale(1); filter: drop-shadow(0 0 15px #ff2a8d); }
+            50% { transform: scale(1.05); filter: drop-shadow(0 0 30px #ff2a8d); }
+        }
+        .pulse-glow { animation: pulseGlow 2.5s infinite; }
+    </style>
+</head>
+<body class="bg-gradient-4k min-h-screen text-gray-100 flex flex-col justify-between relative overflow-hidden">
+
+    <!-- Ambient Floating Hearts Background Canvas -->
+    <canvas id="bgCanvas" class="fixed top-0 left-0 w-full h-full pointer-events-none z-0"></canvas>
+
+    <!-- SECTION 1: UNLOCK PUZZLE SCREEN -->
+    <section id="screen-lock" class="relative z-10 min-h-screen flex flex-col items-center justify-center p-4">
+        <div class="text-center mb-6">
+            <h1 class="text-3xl md:text-5xl font-cinzel font-bold text-pink-300 tracking-wider mb-2 glow-text-pink">MEND MY HEART</h1>
+            <p class="text-sm md:text-base text-pink-200/80">Drag and place all missing heart pieces to unlock our memories</p>
+        </div>
+
+        <div class="glass-card p-6 md:p-10 rounded-3xl flex flex-col items-center max-w-4xl w-full relative">
+            
+            <!-- Heart Outline / Drop Slots -->
+            <div id="heart-target-container" class="relative w-64 h-64 md:w-80 md:h-80 my-4 flex items-center justify-center">
+                <!-- SVG Heart Frame divided into 4 slots -->
+                <svg class="w-full h-full glow-heart" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M100 180 L30 110 A 45 45 0 0 1 90 40 L100 55 L110 40 A 45 45 0 0 1 170 110 Z" stroke="rgba(255, 105, 180, 0.3)" stroke-width="3" stroke-dasharray="6 6" fill="rgba(20, 5, 30, 0.5)"/>
+                </svg>
+
+                <!-- 4 Interactive Slots Overlay -->
+                <div class="absolute inset-0 grid grid-cols-2 grid-rows-2 p-8 gap-2">
+                    <div data-slot="1" class="puzzle-slot border-2 border-dashed border-pink-500/30 rounded-tl-full flex items-center justify-center text-xs text-pink-400/50">Top-Left</div>
+                    <div data-slot="2" class="puzzle-slot border-2 border-dashed border-pink-500/30 rounded-tr-full flex items-center justify-center text-xs text-pink-400/50">Top-Right</div>
+                    <div data-slot="3" class="puzzle-slot border-2 border-dashed border-pink-500/30 rounded-bl-full flex items-center justify-center text-xs text-pink-400/50">Bottom-Left</div>
+                    <div data-slot="4" class="puzzle-slot border-2 border-dashed border-pink-500/30 rounded-br-full flex items-center justify-center text-xs text-pink-400/50">Bottom-Right</div>
+                </div>
+            </div>
+
+            <!-- Scattered Drag-and-Drop Pieces -->
+            <div class="w-full mt-6">
+                <p class="text-xs text-center text-pink-300/70 mb-3">(Touch/Drag or Tap pieces to place them)</p>
+                <div id="pieces-container" class="flex flex-wrap justify-center gap-4 md:gap-8 min-h-[90px] p-4 bg-black/30 rounded-2xl border border-pink-500/20">
+                    <div draggable="true" data-piece="1" class="puzzle-piece w-16 h-16 bg-gradient-to-br from-pink-500 to-rose-600 rounded-tl-full flex items-center justify-center shadow-lg transform hover:scale-110">
+                        <i class="fa-solid fa-heart-crack text-white text-xl"></i>
+                    </div>
+                    <div draggable="true" data-piece="2" class="puzzle-piece w-16 h-16 bg-gradient-to-bl from-pink-500 to-rose-600 rounded-tr-full flex items-center justify-center shadow-lg transform hover:scale-110">
+                        <i class="fa-solid fa-heart-crack text-white text-xl"></i>
+                    </div>
+                    <div draggable="true" data-piece="3" class="puzzle-piece w-16 h-16 bg-gradient-to-tr from-pink-600 to-rose-700 rounded-bl-full flex items-center justify-center shadow-lg transform hover:scale-110">
+                        <i class="fa-solid fa-heart-crack text-white text-xl"></i>
+                    </div>
+                    <div draggable="true" data-piece="4" class="puzzle-piece w-16 h-16 bg-gradient-to-tl from-pink-600 to-rose-700 rounded-br-full flex items-center justify-center shadow-lg transform hover:scale-110">
+                        <i class="fa-solid fa-heart-crack text-white text-xl"></i>
+                    </div>
+                </div>
+            </div>
+
+            <button id="auto-solve-btn" class="mt-4 text-xs text-pink-400 underline hover:text-pink-200 transition">Auto assemble pieces ❤️</button>
+        </div>
+    </section>
+
+    <!-- SECTION 2: INTERACTIVE QUESTION ("Do You Love Me?") -->
+    <section id="screen-question" class="hidden relative z-10 min-h-screen flex flex-col items-center justify-center p-4">
+        <!-- Floating Animated Emojis -->
+        <div class="absolute inset-0 pointer-events-none overflow-hidden">
+            <span class="absolute top-1/4 left-10 text-4xl floating" style="animation-delay: 0s;">🥰</span>
+            <span class="absolute top-1/3 right-12 text-5xl floating" style="animation-delay: 1s;">💖</span>
+            <span class="absolute bottom-1/4 left-16 text-5xl floating" style="animation-delay: 2s;">😘</span>
+            <span class="absolute bottom-1/3 right-20 text-4xl floating" style="animation-delay: 1.5s;">🌹</span>
+        </div>
+
+        <div class="glass-card p-8 md:p-14 rounded-3xl text-center max-w-xl w-full relative">
+            <div class="text-6xl mb-6 pulse-glow">🥺👉👈</div>
+            <h2 class="text-3xl md:text-5xl font-cursive font-bold text-pink-300 mb-8 leading-relaxed">
+                Do you love me, my angel?
+            </h2>
+
+            <div class="flex flex-col md:flex-row items-center justify-center gap-6 min-h-[140px]" id="button-wrapper">
+                <button id="btn-yes" class="bg-gradient-to-r from-pink-500 to-rose-600 hover:from-pink-600 hover:to-rose-700 text-white font-bold py-4 px-10 rounded-full shadow-lg transform hover:scale-105 transition-all duration-300 text-xl tracking-wider glow-heart">
+                    YES! 💖
+                </button>
+                <button id="btn-no" class="bg-gray-700 hover:bg-gray-600 text-white font-semibold py-3 px-8 rounded-full shadow transition-all duration-300 text-lg">
+                    No 😜
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 3: LOADING TRANSITION -->
+    <section id="screen-loading" class="hidden relative z-10 min-h-screen flex flex-col items-center justify-center p-4">
+        <div class="glass-card p-10 rounded-3xl text-center max-w-md w-full flex flex-col items-center">
+            <div class="w-20 h-20 border-4 border-pink-500/20 border-t-pink-500 rounded-full animate-spin mb-6"></div>
+            <h3 id="loading-text" class="text-2xl font-cursive text-pink-300 mb-2">I knew it babes, you love me so much! 🥰</h3>
+            <p class="text-xs text-pink-200/60">Opening your realm of love...</p>
+        </div>
+    </section>
+
+    <!-- SECTION 4: MAIN MULTI-TAB EXPERIENCE -->
+    <section id="screen-main" class="hidden relative z-10 min-h-screen flex flex-col p-4 md:p-8 max-w-5xl mx-auto">
+        
+        <!-- Navigation Header -->
+        <nav class="glass-card rounded-2xl p-3 mb-8 flex justify-wrap justify-around gap-2 text-xs md:text-sm">
+            <button onclick="switchTab('timer')" id="tab-timer" class="tab-btn px-4 py-2 rounded-xl bg-pink-600 text-white font-semibold transition">⌛ Our Journey</button>
+            <button onclick="switchTab('letter')" id="tab-letter" class="tab-btn px-4 py-2 rounded-xl hover:bg-pink-500/20 text-pink-200 transition">✉️ Deep Love Letter</button>
+            <button onclick="switchTab('reasons')" id="tab-reasons" class="tab-btn px-4 py-2 rounded-xl hover:bg-pink-500/20 text-pink-200 transition">💯 100 Reasons</button>
+            <button onclick="switchTab('cake')" id="tab-cake" class="tab-btn px-4 py-2 rounded-xl hover:bg-pink-500/20 text-pink-200 transition">🎂 Celebration</button>
+        </nav>
+
+        <!-- TAB 1: COUNTER -->
+        <div id="content-timer" class="tab-content flex-1 flex flex-col items-center justify-center text-center">
+            <div class="glass-card p-8 md:p-12 rounded-3xl w-full max-w-3xl">
+                <h2 class="text-3xl md:text-5xl font-cinzel font-bold text-pink-300 mb-4 glow-text-pink">DAYS WE ARE TOGETHER</h2>
+                <p class="text-pink-200/70 mb-8 text-sm md:text-base">Every single second since the day we started our journey...</p>
+
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                    <div class="bg-black/40 p-4 rounded-2xl border border-pink-500/20">
+                        <span id="days-count" class="text-3xl md:text-5xl font-bold text-pink-400 block mb-1">0</span>
+                        <span class="text-xs uppercase tracking-widest text-pink-200/60">Days</span>
+                    </div>
+                    <div class="bg-black/40 p-4 rounded-2xl border border-pink-500/20">
+                        <span id="hours-count" class="text-3xl md:text-5xl font-bold text-pink-400 block mb-1">0</span>
+                        <span class="text-xs uppercase tracking-widest text-pink-200/60">Hours</span>
+                    </div>
+                    <div class="bg-black/40 p-4 rounded-2xl border border-pink-500/20">
+                        <span id="minutes-count" class="text-3xl md:text-5xl font-bold text-pink-400 block mb-1">0</span>
+                        <span class="text-xs uppercase tracking-widest text-pink-200/60">Minutes</span>
+                    </div>
+                    <div class="bg-black/40 p-4 rounded-2xl border border-pink-500/20">
+                        <span id="seconds-count" class="text-3xl md:text-5xl font-bold text-pink-400 block mb-1">0</span>
+                        <span class="text-xs uppercase tracking-widest text-pink-200/60">Seconds</span>
+                    </div>
+                </div>
+
+                <p class="font-cursive text-2xl text-pink-300">"In you, I've found the love of my life and my closest friend."</p>
+            </div>
+        </div>
+
+        <!-- TAB 2: ANIMATED LOVE LETTER -->
+        <div id="content-letter" class="tab-content hidden flex-1 flex flex-col items-center justify-center">
+            
+            <!-- Envelope Stage -->
+            <div id="envelope-wrapper" class="cursor-pointer flex flex-col items-center" onclick="openEnvelope()">
+                <div class="relative w-72 h-48 md:w-96 md:h-64 bg-rose-900 rounded-b-xl shadow-2xl border-2 border-pink-400/40 flex items-center justify-center group transform transition hover:scale-105">
+                    <div class="absolute inset-0 bg-gradient-to-t from-rose-950 to-rose-800 rounded-b-xl"></div>
+                    <div class="z-10 text-center">
+                        <i class="fa-solid fa-envelope text-6xl text-pink-300 group-hover:scale-110 transition"></i>
+                        <p class="mt-3 text-pink-200 font-cursive text-xl">Click to Open My Heart Envelope ❤️</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Opened Letter Content (Typewriter Animation) -->
+            <div id="letter-content" class="hidden glass-card p-6 md:p-12 rounded-3xl w-full max-w-3xl relative my-4">
+                <div class="flex justify-between items-center mb-6 border-b border-pink-500/20 pb-4">
+                    <h3 class="font-cinzel text-2xl text-pink-300 font-bold">To My Goddess & Eternal Soulmate</h3>
+                    <i class="fa-solid fa-heart text-pink-500 text-2xl pulse-glow"></i>
+                </div>
+                
+                <div id="typewriter-body" class="text-gray-200 text-sm md:text-base leading-relaxed space-y-4 font-light max-h-[60vh] overflow-y-auto pr-2">
+                    <!-- Text inserted via JS -->
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 3: 100 REASONS -->
+        <div id="content-reasons" class="tab-content hidden flex-1 flex flex-col items-center justify-center">
+            <div class="glass-card p-6 md:p-10 rounded-3xl w-full max-w-3xl text-center">
+                <h3 class="text-2xl md:text-4xl font-cinzel font-bold text-pink-300 mb-2">100 REASONS WHY I LOVE YOU DEEPLY</h3>
+                <p class="text-pink-200/60 text-xs md:text-sm mb-6">Click Next to explore every single reason my heart belongs to you</p>
+
+                <div class="bg-black/40 border border-pink-500/30 p-8 rounded-2xl min-h-[180px] flex flex-col items-center justify-center mb-6 relative">
+                    <span id="reason-number" class="absolute top-3 left-4 text-xs font-bold text-pink-400 tracking-wider">REASON #1</span>
+                    <p id="reason-text" class="text-xl md:text-2xl font-cursive text-pink-100 px-4">Loading love reason...</p>
+                </div>
+
+                <div class="flex justify-between items-center gap-4">
+                    <button onclick="prevReason()" class="px-6 py-2 rounded-full bg-pink-500/20 hover:bg-pink-500/40 text-pink-200 transition">
+                        <i class="fa-solid fa-arrow-left mr-2"></i> Prev
+                    </button>
+                    <span id="reason-counter-badge" class="text-xs text-pink-300/80">1 / 100</span>
+                    <button onclick="nextReason()" class="px-6 py-2 rounded-full bg-pink-600 hover:bg-pink-500 text-white font-semibold shadow-lg transition">
+                        Next <i class="fa-solid fa-arrow-right ml-2"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 4: REALISTIC CAKE & FIREWORKS -->
+        <div id="content-cake" class="tab-content hidden flex-1 flex flex-col items-center justify-center text-center">
+            <div class="glass-card p-8 rounded-3xl w-full max-w-2xl flex flex-col items-center">
+                <h3 class="text-3xl md:text-4xl font-cinzel font-bold text-pink-300 mb-2 glow-text-pink">HAPPY ANNIVERSARY!</h3>
+                <p class="text-pink-200/70 text-sm mb-6">Tap/Click on our anniversary cake to blow out candles & spark fireworks! ✨</p>
+
+                <!-- 3D HTML/CSS Animated Cake -->
+                <div id="cake-interactive" class="relative my-8 cursor-pointer transform hover:scale-105 transition" onclick="triggerCelebration()">
+                    <canvas id="cakeCanvas" width="320" height="260" class="mx-auto"></canvas>
+                </div>
+
+                <button onclick="triggerCelebration()" class="px-8 py-3 rounded-full bg-gradient-to-r from-pink-500 to-rose-600 text-white font-bold shadow-xl hover:from-pink-600 hover:to-rose-700 transition tracking-wider glow-heart">
+                    🎆 SPARK FIREWORKS AGAIN
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Fireworks Canvas Layer -->
+    <canvas id="fireworksCanvas" class="fixed inset-0 pointer-events-none z-50"></canvas>
+
+    <script>
+        /* ================= STATE MANAGEMENT & SETUP ================= */
+        // Set your proposal/anniversary start date here:
+        const START_DATE = new Date("2022-02-14T00:00:00"); // Change to your actual date if needed
+
+        let placedPieces = 0;
+        let noClickCount = 0;
+        let currentReasonIdx = 0;
+
+        /* ================= AMBIENT BACKGROUND PARTICLES ================= */
+        const bgCanvas = document.getElementById('bgCanvas');
+        const bgCtx = bgCanvas.getContext('2d');
+        let bgHearts = [];
+
+        function resizeBgCanvas() {
+            bgCanvas.width = window.innerWidth;
+            bgCanvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeBgCanvas);
+        resizeBgCanvas();
+
+        class BackgroundHeart {
+            constructor() {
+                this.reset();
+            }
+            reset() {
+                this.x = Math.random() * bgCanvas.width;
+                this.y = bgCanvas.height + 20;
+                this.size = Math.random() * 12 + 6;
+                this.speed = Math.random() * 1.5 + 0.5;
+                this.opacity = Math.random() * 0.5 + 0.2;
+                this.swing = Math.random() * 0.05;
+                this.swingAngle = Math.random() * Math.PI * 2;
+            }
+            update() {
+                this.y -= this.speed;
+                this.swingAngle += this.swing;
+                this.x += Math.sin(this.swingAngle) * 0.5;
+                if (this.y < -20) this.reset();
+            }
+            draw() {
+                bgCtx.save();
+                bgCtx.globalAlpha = this.opacity;
+                bgCtx.fillStyle = '#ff2a8d';
+                bgCtx.beginPath();
+                const x = this.x, y = this.y, s = this.size;
+                bgCtx.moveTo(x, y);
+                bgCtx.bezierCurveTo(x - s/2, y - s/2, x - s, y + s/3, x, y + s);
+                bgCtx.bezierCurveTo(x + s, y + s/3, x + s/2, y - s/2, x, y);
+                bgCtx.fill();
+                bgCtx.restore();
+            }
+        }
+
+        for (let i = 0; i < 35; i++) {
+            bgHearts.push(new BackgroundHeart());
+        }
+
+        function animateBg() {
+            bgCtx.clearRect(0, 0, bgCanvas.width, bgCanvas.height);
+            bgHearts.forEach(h => {
+                h.update();
+                h.draw();
+            });
+            requestAnimationFrame(animateBg);
+        }
+        animateBg();
+
+        /* ================= SCREEN 1: DRAG & DROP PUZZLE ================= */
+        const pieces = document.querySelectorAll('.puzzle-piece');
+        const slots = document.querySelectorAll('.puzzle-slot');
+
+        pieces.forEach(piece => {
+            piece.addEventListener('dragstart', (e) => {
+                e.dataTransfer.setData('text/plain', piece.dataset.piece);
+            });
+            // Touch support for mobile devices
+            piece.addEventListener('click', () => {
+                autoPlacePiece(piece);
+            });
+        });
+
+        slots.forEach(slot => {
+            slot.addEventListener('dragover', (e) => e.preventDefault());
+            slot.addEventListener('drop', (e) => {
+                e.preventDefault();
+                const pieceId = e.dataTransfer.getData('text/plain');
+                if (slot.dataset.slot === pieceId) {
+                    const pieceEl = document.querySelector(`.puzzle-piece[data-piece="${pieceId}"]`);
+                    slot.appendChild(pieceEl);
+                    slot.classList.add('border-pink-500', 'bg-pink-500/20');
+                    pieceEl.classList.remove('puzzle-piece');
+                    placedPieces++;
+                    checkLockUnlocked();
+                }
+            });
+        });
+
+        function autoPlacePiece(pieceEl) {
+            const pId = pieceEl.dataset.piece;
+            const targetSlot = document.querySelector(`.puzzle-slot[data-slot="${pId}"]`);
+            if (targetSlot && !targetSlot.hasChildNodes()) {
+                targetSlot.appendChild(pieceEl);
+                targetSlot.classList.add('border-pink-500', 'bg-pink-500/20');
+                placedPieces++;
+                checkLockUnlocked();
+            }
+        }
+
+        document.getElementById('auto-solve-btn').addEventListener('click', () => {
+            pieces.forEach(piece => autoPlacePiece(piece));
+        });
+
+        function checkLockUnlocked() {
+            if (placedPieces >= 4) {
+                setTimeout(() => {
+                    document.getElementById('screen-lock').classList.add('hidden');
+                    document.getElementById('screen-question').classList.remove('hidden');
+                }, 600);
+            }
+        }
+
+        /* ================= SCREEN 2: QUESTION ("Do You Love Me?") ================= */
+        const btnYes = document.getElementById('btn-yes');
+        const btnNo = document.getElementById('btn-no');
+
+        btnNo.addEventListener('click', () => {
+            noClickCount++;
+            if (noClickCount === 1) {
+                btnNo.style.transform = 'scale(0.7)';
+                btnYes.style.transform = 'scale(1.3)';
+            } else if (noClickCount === 2) {
+                btnNo.style.transform = 'scale(0.4)';
+                btnYes.style.transform = 'scale(1.7)';
+            } else {
+                btnNo.style.display = 'none';
+                btnYes.style.transform = 'scale(2.1)';
+            }
+        });
+
+        btnYes.addEventListener('click', () => {
+            document.getElementById('screen-question').classList.add('hidden');
+            document.getElementById('screen-loading').classList.remove('hidden');
+            
+            setTimeout(() => {
+                document.getElementById('screen-loading').classList.add('hidden');
+                document.getElementById('screen-main').classList.remove('hidden');
+                startCounter();
+                renderCake();
+            }, 2800);
+        });
+
+        /* ================= SCREEN 4: TAB SWITCHING ================= */
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('bg-pink-600', 'text-white');
+                btn.classList.add('hover:bg-pink-500/20', 'text-pink-200');
+            });
+
+            document.getElementById(`content-${tabName}`).classList.remove('hidden');
+            const activeBtn = document.getElementById(`tab-${tabName}`);
+            activeBtn.classList.add('bg-pink-600', 'text-white');
+            activeBtn.classList.remove('hover:bg-pink-500/20', 'text-pink-200');
+        }
+
+        /* ================= COUNTER SYSTEM ================= */
+        function startCounter() {
+            function update() {
+                const now = new Date();
+                const diff = now - START_DATE;
+
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+                const minutes = Math.floor((diff / 1000 / 60) % 60);
+                const seconds = Math.floor((diff / 1000) % 60);
+
+                document.getElementById('days-count').innerText = days;
+                document.getElementById('hours-count').innerText = hours;
+                document.getElementById('minutes-count').innerText = minutes;
+                document.getElementById('seconds-count').innerText = seconds;
+            }
+            update();
+            setInterval(update, 1000);
+        }
+
+        /* ================= LOVE LETTER TYPEWRITER ================= */
+        const letterText = `My Dearest Angel,\n\nLooking back at where we started, from those simple text messages to becoming best friends, and now standing as true lovers, this journey has been nothing short of a miracle. You are my truest, most unexpected and expected god gift.\n\nYour loyalty to me is unmatched. Your patience, your incredible strength of character, and your breathtaking beauty make you look like a pure angel sent from above. In every way, you are also my mother after my mother—caring for my soul, guiding me with warmth and unending love.\n\nI promise you today with all my heart: You are my EVERYTHING. No woman in this world or universe could ever replace your position in my heart. You are the only one I want—forever and always. My love for you is absolute, and every day with you is my greatest blessing.\n\nForever Yours, ❤️`;
+
+        let letterOpened = false;
+        function openEnvelope() {
+            if (letterOpened) return;
+            letterOpened = true;
+            document.getElementById('envelope-wrapper').classList.add('hidden');
+            document.getElementById('letter-content').classList.remove('hidden');
+
+            const container = document.getElementById('typewriter-body');
+            let idx = 0;
+
+            function typeNextChar() {
+                if (idx < letterText.length) {
+                    const char = letterText.charAt(idx);
+                    if (char === '\n') {
+                        container.innerHTML += '<br/>';
+                    } else {
+                        container.innerHTML += char;
+                    }
+                    idx++;
+                    setTimeout(typeNextChar, 25);
+                }
+            }
+            typeNextChar();
+        }
+
+        /* ================= 100 REASONS ARRAY & LOGIC ================= */
+        const reasons = [
+            "Your breathtaking eyes that light up my darkest days.",
+            "Your gentle and tender lips that I love kissing.",
+            "The unmatched warmth and caring nature you show me every day.",
+            "Your loyalty—you stand by my side through everything.",
+            "Your incredible patience when dealing with my imperfections.",
+            "Your heart of gold that inspires me to be a better man.",
+            "How you look like a literal angel when you smile.",
+            "The way you care for me like a mother after my mother.",
+            "Our early text message conversations that started our magic.",
+            "Your beautiful character that radiates purity and kindness.",
+            "How safe and complete I feel whenever I hold your hand.",
+            "The way your laugh brightens up the entire room.",
+            "Because you are my God-given miracle.",
+            "How deep and unconditional your love for me is.",
+            "The cute little ways you express affection.",
+            "Because no woman in the universe could ever replace you.",
+            "Your dedication to making our relationship strong.",
+            "How you understand me even without words.",
+            "Your heavenly soft touch.",
+            "How you make every mundane moment feel special.",
+            "Your unique intelligence and wisdom.",
+            "The beautiful soul you possess.",
+            "How you respect and honor our love bond.",
+            "The way you look at me with total adoration.",
+            "Your gentle voice that calms my heart.",
+            "Because my heart belongs to you and only you.",
+            "How supportive you are of all my dreams.",
+            "Your sense of humor that makes me laugh endlessly.",
+            "How you hold me close when I need warmth.",
+            "Because you are my best friend and lover in one.",
+            "The effortless grace you carry everywhere.",
+            "How you make our house feel like a loving home.",
+            "The endless patience you show toward me.",
+            "Your cute expression when you get playful.",
+            "The way you motivate me to reach for the stars.",
+            "Because you are my soulmate chosen by destiny.",
+            "Your sincerity in everything you do.",
+            "How comfortable I feel sharing all my secrets with you.",
+            "Your soft hair and how amazing it smells.",
+            "Because choosing you was the best decision of my life.",
+            "Your beautiful morals and strong values.",
+            "How you remember small details about us.",
+            "The romantic sparks that never fade between us.",
+            "Your loving hugs that melt away all my stress.",
+            "Because you are my dream come true.",
+            "Your beautiful style and elegance.",
+            "How you bring peace into my chaotic mind.",
+            "The way you pray and wish the best for us.",
+            "Your unconditional loyalty that gives me peace.",
+            "Because life without you is unimaginable.",
+            "How deeply caring you are when I am unwell.",
+            "The sweet pet names you call me.",
+            "Your cute little pout when you want attention.",
+            "How you make me feel like the luckiest man alive.",
+            "Because you accept me for who I truly am.",
+            "The magical connection we share since day one.",
+            "Your radiant beauty that takes my breath away.",
+            "How you treat my family with utmost love and respect.",
+            "Your warm hugs in the cold weather.",
+            "Because every day with you is a gift from God.",
+            "Your soothing presence in my life.",
+            "How you celebrate my smallest victories.",
+            "The passion and devotion in your eyes.",
+            "Because you are my strength when I am weak.",
+            "Your beautiful personality that shines brighter than stars.",
+            "The cute sound of your laughter.",
+            "How you always listen to me attentively.",
+            "Because you make me want to build an entire future with you.",
+            "Your sweetness that never wanes.",
+            "How you always find a way to make me smile.",
+            "Because you are my forever and my always.",
+            "Your adorable reactions when I surprise you.",
+            "How deeply loyal and true your heart is.",
+            "The loving touch of your hands in mine.",
+            "Because our love story is my favorite story.",
+            "Your strength and courage in hard times.",
+            "How you fill my heart with boundless joy.",
+            "Your loving care that feels like home.",
+            "Because I fall deeper in love with you every single day.",
+            "Your sparkling eyes when you are happy.",
+            "How you balance my life with your love.",
+            "Because you are my heart's ultimate desire.",
+            "Your soft cheeks that blush so beautifully.",
+            "How you always bring out the best in me.",
+            "Because no one else could ever hold my heart like you.",
+            "Your pure heart free of malice.",
+            "The sweet memories we've built together so far.",
+            "How you stand by me through thick and thin.",
+            "Your unwavering trust in me.",
+            "Because you are my queen and my goddess.",
+            "Your lovely aesthetic and artistic soul.",
+            "The way you make my heart skip a beat even now.",
+            "Your comforting words when I feel down.",
+            "Because you are the answer to all my prayers.",
+            "Your beautiful fashion sense and charm.",
+            "How effortlessly loving you are.",
+            "Because you hold the key to my soul.",
+            "Your endless generosity and kindness.",
+            "Because I promise to love you for eternity.",
+            "Because you are my EVERYTHING, my ultimate love forever!"
+        ];
+
+        function updateReasonCard() {
+            document.getElementById('reason-number').innerText = `REASON #${currentReasonIdx + 1}`;
+            document.getElementById('reason-text').innerText = `"${reasons[currentReasonIdx]}"`;
+            document.getElementById('reason-counter-badge').innerText = `${currentReasonIdx + 1} / ${reasons.length}`;
+        }
+        updateReasonCard();
+
+        function nextReason() {
+            currentReasonIdx = (currentReasonIdx + 1) % reasons.length;
+            updateReasonCard();
+        }
+
+        function prevReason() {
+            currentReasonIdx = (currentReasonIdx - 1 + reasons.length) % reasons.length;
+            updateReasonCard();
+        }
+
+        /* ================= REALISTIC CANVAS CAKE RENDER ================= */
+        function renderCake() {
+            const canvas = document.getElementById('cakeCanvas');
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Cake Stand
+            ctx.fillStyle = "#e0e0e0";
+            ctx.beginPath();
+            ctx.ellipse(160, 220, 110, 20, 0, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Cake Tier 1 (Bottom)
+            ctx.fillStyle = "#800e3f";
+            ctx.fillRect(70, 150, 180, 50);
+            ctx.fillStyle = "#b81d5b";
+            ctx.beginPath();
+            ctx.ellipse(160, 150, 90, 15, 0, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Cake Tier 2 (Top)
+            ctx.fillStyle = "#a81350";
+            ctx.fillRect(95, 100, 130, 50);
+            ctx.fillStyle = "#e83e8c";
+            ctx.beginPath();
+            ctx.ellipse(160, 100, 65, 12, 0, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Cream Drips
+            ctx.fillStyle = "#ffffff";
+            ctx.beginPath();
+            ctx.arc(110, 105, 8, 0, Math.PI);
+            ctx.arc(130, 105, 10, 0, Math.PI);
+            ctx.arc(150, 105, 7, 0, Math.PI);
+            ctx.arc(170, 105, 9, 0, Math.PI);
+            ctx.arc(190, 105, 8, 0, Math.PI);
+            ctx.fill();
+
+            // Candle
+            ctx.fillStyle = "#fff";
+            ctx.fillRect(156, 65, 8, 30);
+
+            // Flame Animation
+            let flameSize = 8;
+            function drawFlame() {
+                ctx.clearRect(145, 35, 30, 30);
+                flameSize = 7 + Math.random() * 4;
+                ctx.fillStyle = "#ff9800";
+                ctx.beginPath();
+                ctx.arc(160, 55, flameSize, 0, Math.PI * 2);
+                ctx.fill();
+
+                ctx.fillStyle = "#ffeb3b";
+                ctx.beginPath();
+                ctx.arc(160, 55, flameSize * 0.5, 0, Math.PI * 2);
+                ctx.fill();
+
+                requestAnimationFrame(drawFlame);
+            }
+            drawFlame();
+        }
+
+        /* ================= REALISTIC FIREWORKS ENGINE ================= */
+        const fwCanvas = document.getElementById('fireworksCanvas');
+        const fwCtx = fwCanvas.getContext('2d');
+        let fwParticles = [];
+
+        function resizeFwCanvas() {
+            fwCanvas.width = window.innerWidth;
+            fwCanvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeFwCanvas);
+        resizeFwCanvas();
+
+        class FireworkParticle {
+            constructor(x, y, color) {
+                this.x = x;
+                this.y = y;
+                this.color = color;
+                const angle = Math.random() * Math.PI * 2;
+                const speed = Math.random() * 8 + 2;
+                this.vx = Math.cos(angle) * speed;
+                this.vy = Math.sin(angle) * speed;
+                this.alpha = 1;
+                this.friction = 0.96;
+                this.gravity = 0.12;
+            }
+            update() {
+                this.vx *= this.friction;
+                this.vy *= this.friction;
+                this.vy += this.gravity;
+                this.x += this.vx;
+                this.y += this.vy;
+                this.alpha -= 0.015;
+            }
+            draw() {
+                fwCtx.save();
+                fwCtx.globalAlpha = this.alpha;
+                fwCtx.fillStyle = this.color;
+                fwCtx.beginPath();
+                fwCtx.arc(this.x, this.y, 3, 0, Math.PI * 2);
+                fwCtx.fill();
+                fwCtx.restore();
+            }
+        }
+
+        function createExplosion(x, y) {
+            const colors = ['#ff2a8d', '#ff7300', '#00e5ff', '#ffeb3b', '#e040fb', '#ffffff'];
+            const count = 80;
+            for (let i = 0; i < count; i++) {
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                fwParticles.push(new FireworkParticle(x, y, color));
+            }
+        }
+
+        function animateFireworks() {
+            fwCtx.clearRect(0, 0, fwCanvas.width, fwCanvas.height);
+            for (let i = fwParticles.length - 1; i >= 0; i--) {
+                fwParticles[i].update();
+                fwParticles[i].draw();
+                if (fwParticles[i].alpha <= 0) {
+                    fwParticles.splice(i, 1);
+                }
+            }
+            requestAnimationFrame(animateFireworks);
+        }
+        animateFireworks();
+
+        function triggerCelebration() {
+            // Trigger 5 fireworks bursts across the screen
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+
+            for (let i = 0; i < 6; i++) {
+                setTimeout(() => {
+                    const x = Math.random() * (width * 0.8) + width * 0.1;
+                    const y = Math.random() * (height * 0.5) + height * 0.1;
+                    createExplosion(x, y);
+                }, i * 300);
+            }
+
+            // Confetti Cannon
+            if (typeof confetti === 'function') {
+                confetti({
+                    particleCount: 120,
+                    spread: 80,
+                    origin: { y: 0.6 }
+                });
+            }
+        }
+    </script>
+</body>
+</html>
