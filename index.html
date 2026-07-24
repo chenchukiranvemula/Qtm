@@ -3,27 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Our Story ❤️</title>
+    <title>For My Eternal Queen ❤️</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;1,400&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Cinzel:wght@500;700&family=Great+Vibes&family=Plus+Jakarta+Sans:wght@300;400;600&display=swap" rel="stylesheet">
 
     <audio id="bgMusic" loop src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=romantic-piano-112199.mp3"></audio>
 
     <style>
-        /* ==========================================
-           MODERN DESIGN SYSTEM
-        ========================================== */
         :root {
-            --bg-dark: #070712;
+            --royal-gold: #d4af37;
+            --gold-glow: rgba(212, 175, 55, 0.5);
+            --royal-burgundy: #2a0812;
+            --dark-bg: #07040a;
+            --parchment: #f4e4bc;
+            --parchment-text: #2c1a0e;
             --accent-pink: #ff2a7a;
-            --accent-glow: rgba(255, 42, 122, 0.4);
-            --glass-bg: rgba(255, 255, 255, 0.03);
-            --glass-border: rgba(255, 255, 255, 0.08);
-            --glass-blur: blur(25px);
-            --text-main: #f0f2f8;
-            --text-muted: #a0a5ba;
         }
 
         * {
@@ -34,9 +30,9 @@
         }
 
         body {
+            background-color: var(--dark-bg);
+            color: #f0e6d2;
             font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: var(--bg-dark);
-            color: var(--text-main);
             overflow-x: hidden;
             min-height: 100vh;
         }
@@ -46,29 +42,17 @@
             position: fixed;
             inset: 0;
             z-index: -1;
-            overflow: hidden;
-            background: radial-gradient(circle at 50% 30%, #1a0928 0%, #070712 70%);
+            background: radial-gradient(circle at 50% 30%, #1e0010 0%, #07040a 85%);
         }
 
-        .glow-orb {
-            position: absolute;
-            width: 500px;
-            height: 500px;
-            border-radius: 50%;
-            filter: blur(140px);
-            opacity: 0.35;
-            animation: orbFloat 20s ease-in-out infinite alternate;
+        /* Fireworks Canvas Overlay */
+        #fxCanvas {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 999;
         }
 
-        .orb-1 { top: -10%; left: 20%; background: #ff0055; }
-        .orb-2 { bottom: -10%; right: 10%; background: #7928ca; }
-
-        @keyframes orbFloat {
-            0% { transform: translate(0, 0) scale(1); }
-            100% { transform: translate(60px, 40px) scale(1.15); }
-        }
-
-        /* Containers & Layout */
         section {
             min-height: 100vh;
             display: flex;
@@ -81,411 +65,196 @@
         .hidden {
             display: none !important;
             opacity: 0;
-            transform: translateY(20px);
         }
 
         .card {
             width: 100%;
-            max-width: 760px;
-            padding: 48px 40px;
-            border-radius: 28px;
-            background: var(--glass-bg);
-            backdrop-filter: var(--glass-blur);
-            -webkit-backdrop-filter: var(--glass-blur);
-            border: 1px solid var(--glass-border);
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            max-width: 800px;
+            padding: 48px 36px;
+            border-radius: 20px;
+            background: rgba(25, 10, 20, 0.75);
+            backdrop-filter: blur(25px);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            box-shadow: 0 0 35px rgba(0, 0, 0, 0.9), inset 0 0 15px rgba(212, 175, 55, 0.15);
             text-align: center;
             position: relative;
         }
 
-        /* Typography */
         h1, h2 {
-            font-family: 'Playfair Display', serif;
-            font-weight: 600;
-            letter-spacing: -0.02em;
+            font-family: 'Cinzel Decorative', serif;
+            color: var(--royal-gold);
+            text-shadow: 0 0 15px var(--gold-glow);
         }
 
-        h1 { font-size: 2.5rem; margin-bottom: 12px; }
-        p { color: var(--text-muted); font-size: 1.05rem; line-height: 1.7; }
-
-        /* Buttons */
-        .btn {
+        .btn-royal {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            padding: 16px 38px;
-            border-radius: 100px;
-            border: none;
-            background: linear-gradient(135deg, #ff2a7a 0%, #ff523b 100%);
-            color: #fff;
+            padding: 16px 40px;
+            border-radius: 50px;
+            border: 2px solid var(--royal-gold);
+            background: linear-gradient(135deg, #4a0d1d 0%, #1a050b 100%);
+            color: var(--royal-gold);
+            font-family: 'Cinzel', serif;
+            font-weight: 700;
             font-size: 1rem;
-            font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-            box-shadow: 0 10px 25px var(--accent-glow);
-            margin-top: 28px;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+            margin-top: 30px;
         }
 
-        .btn:hover {
-            transform: translateY(-2px) scale(1.02);
-            box-shadow: 0 15px 35px rgba(255, 42, 122, 0.6);
+        .btn-royal:hover {
+            transform: translateY(-3px) scale(1.03);
+            box-shadow: 0 0 35px var(--royal-gold);
+            background: var(--royal-gold);
+            color: var(--dark-bg);
         }
 
         /* ==========================================
-           HEART PUZZLE SCREEN
+           1. BROKEN HEART PUZZLE ASSEMBLY
         ========================================== */
-        .puzzle-box {
-            position: relative;
-            width: 240px;
-            height: 240px;
-            margin: 36px auto;
+        .puzzle-instructions {
+            color: #d4c3b3;
+            margin-bottom: 25px;
+            font-style: italic;
         }
 
-        .heart-frame {
+        .heart-puzzle-area {
+            position: relative;
+            width: 260px;
+            height: 260px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .heart-outline {
+            font-size: 110px;
+            opacity: 0.25;
+            filter: grayscale(100%);
+            transition: all 0.8s ease;
+        }
+
+        .heart-piece {
             position: absolute;
-            inset: 0;
-            border: 2px dashed rgba(255, 255, 255, 0.2);
+            font-size: 50px;
+            cursor: pointer;
+            transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            filter: drop-shadow(0 0 10px rgba(255, 42, 122, 0.8));
+        }
+
+        /* Piece Scatter Positions */
+        #piece1 { top: 0; left: 10px; transform: rotate(-25deg); }
+        #piece2 { top: 0; right: 10px; transform: rotate(30deg); }
+        #piece3 { bottom: 10px; left: 20px; transform: rotate(-15deg); }
+        #piece4 { bottom: 10px; right: 20px; transform: rotate(40deg); }
+
+        .assembled {
+            animation: pulseHeart 1.5s infinite alternate;
+        }
+
+        @keyframes pulseHeart {
+            0% { transform: scale(1); filter: drop-shadow(0 0 20px #ff2a7a); }
+            100% { transform: scale(1.15); filter: drop-shadow(0 0 45px #ff2a7a); }
+        }
+
+        /* ==========================================
+           2. RELATIONSHIP COUNTER
+        ========================================== */
+        .timer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 15px;
+            margin: 35px 0;
+        }
+
+        .timer-box {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--royal-gold);
+            border-radius: 12px;
+            padding: 18px 10px;
+            box-shadow: inset 0 0 10px rgba(212, 175, 55, 0.2);
+        }
+
+        .timer-box h3 {
+            font-family: 'Cinzel', serif;
+            font-size: 2rem;
+            color: #ffffff;
+            text-shadow: 0 0 10px var(--royal-gold);
+        }
+
+        .timer-box span {
+            font-size: 0.75rem;
+            color: var(--royal-gold);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        /* ==========================================
+           3. KING STYLE ROYAL PARCHMENT LETTER
+        ========================================== */
+        .royal-parchment {
+            background: linear-gradient(135deg, #f4e4bc 0%, #e2ca90 100%);
+            color: var(--parchment-text);
+            padding: 40px;
+            border-radius: 8px;
+            border: 12px solid #5c1827;
+            box-shadow: 0 0 40px rgba(0, 0, 0, 0.9), inset 0 0 50px rgba(0,0,0,0.3);
+            text-align: left;
+            position: relative;
+            margin-top: 25px;
+            font-family: 'Cinzel', serif;
+            max-height: 420px;
+            overflow-y: auto;
+        }
+
+        .royal-parchment::before {
+            content: "👑";
+            display: block;
+            text-align: center;
+            font-size: 35px;
+            margin-bottom: 10px;
+        }
+
+        .royal-letter-body {
+            font-size: 1.05rem;
+            line-height: 2;
+            white-space: pre-wrap;
+            font-weight: 600;
+        }
+
+        .wax-seal {
+            width: 70px;
+            height: 70px;
+            background: #8b0000;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 90px;
-            transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
-            filter: drop-shadow(0 0 0px transparent);
-        }
-
-        .heart-frame.complete {
-            border-style: solid;
-            border-color: var(--accent-pink);
-            filter: drop-shadow(0 0 35px var(--accent-pink));
-            transform: scale(1.1);
-        }
-
-        /* Fullscreen Loading Overlay */
-        #completionOverlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(7, 7, 18, 0.92);
-            backdrop-filter: blur(20px);
-            z-index: 1000;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 20px;
-        }
-
-        .completion-quote {
-            font-family: 'Dancing Script', cursive;
-            font-size: 2.8rem;
-            color: var(--accent-pink);
-            margin-top: 20px;
-            text-shadow: 0 0 20px var(--accent-glow);
+            color: var(--royal-gold);
+            font-family: 'Great Vibes', cursive;
+            font-size: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5), inset 0 0 10px rgba(0,0,0,0.5);
+            margin: 20px auto 0 auto;
+            border: 2px dashed var(--royal-gold);
         }
 
         /* ==========================================
-           TIMER SECTION
+           4. 100 REASONS PAGE (1 TO 100)
         ========================================== */
-        .timer-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
-            gap: 12px;
-            margin: 32px 0;
-        }
-
-        .timer-unit {
-            padding: 16px 8px;
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid var(--glass-border);
-            border-radius: 16px;
-        }
-
-        .timer-unit h3 {
-            font-size: 1.8rem;
-            color: var(--accent-pink);
-            font-weight: 700;
-        }
-
-        .timer-unit span {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-        }
-
-        /* ==========================================
-           LETTER SECTION
-        ========================================== */
-        .letter-paper {
-            text-align: left;
-            background: rgba(0, 0, 0, 0.3);
-            padding: 32px;
-            border-radius: 20px;
-            border-left: 3px solid var(--accent-pink);
-            margin-top: 24px;
-            font-size: 1rem;
-            line-height: 1.8;
-            white-space: pre-wrap;
-            max-height: 400px;
-            overflow-y: auto;
-        }
-
-        /* 100 Reasons Box */
-        .reasons-list {
-            max-height: 380px;
+        .reasons-scroll-box {
+            max-height: 420px;
             overflow-y: auto;
             text-align: left;
-            padding: 20px;
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: 16px;
-            margin: 24px 0;
+            padding: 25px;
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid var(--royal-gold);
+            border-radius: 12px;
+            margin: 25px 0;
         }
 
-        .reasons-list p {
-            margin-bottom: 12px;
-            font-size: 0.95rem;
-            color: var(--text-main);
-        }
-
-        .reasons-list strong {
-            color: var(--accent-pink);
-        }
-
-        @media (max-width: 600px) {
-            .card { padding: 32px 20px; }
-            h1 { font-size: 1.8rem; }
-            .completion-quote { font-size: 2rem; }
-        }
-    </style>
-</head>
-<body>
-
-    <div class="ambient-bg">
-        <div class="glow-orb orb-1"></div>
-        <div class="glow-orb orb-2"></div>
-    </div>
-
-    <section id="screenPuzzle">
-        <div class="card">
-            <h1>Assemble My Heart</h1>
-            <p>Click below to unify the pieces of my heart...</p>
-
-            <div class="puzzle-box">
-                <div class="heart-frame" id="heartFrame">🤍</div>
-            </div>
-
-            <button class="btn" id="btnAssemble">Complete My Heart ❤️</button>
-        </div>
-    </section>
-
-    <div id="completionOverlay" class="hidden">
-        <div style="font-size: 80px;">💖</div>
-        <div class="completion-quote">"Now you have completed my heart..."</div>
-    </div>
-
-    <section id="screenQuestion" class="hidden">
-        <div class="card">
-            <h1 style="font-size: 3rem; margin-bottom: 10px;">🥺</h1>
-            <h1>Do You Love Me?</h1>
-            <p>Choose wisely...</p>
-            <div style="margin-top: 20px;">
-                <button class="btn" id="btnYes">YES ❤️</button>
-                <button class="btn" id="btnNo" style="background: rgba(255,255,255,0.1); box-shadow: none;">NO 💔</button>
-            </div>
-        </div>
-    </section>
-
-    <section id="screenTimer" class="hidden">
-        <div class="card">
-            <h1>Our Journey Together</h1>
-            <p>Every single moment since February 10, 2023</p>
-
-            <div class="timer-grid">
-                <div class="timer-unit"><h3 id="years">0</h3><span>Years</span></div>
-                <div class="timer-unit"><h3 id="months">0</h3><span>Months</span></div>
-                <div class="timer-unit"><h3 id="days">0</h3><span>Days</span></div>
-                <div class="timer-unit"><h3 id="hours">0</h3><span>Hours</span></div>
-                <div class="timer-unit"><h3 id="minutes">0</h3><span>Mins</span></div>
-                <div class="timer-unit"><h3 id="seconds">0</h3><span>Secs</span></div>
-            </div>
-
-            <button class="btn" id="btnOpenLetter">Read My Letter 💌</button>
-        </div>
-    </section>
-
-    <section id="screenLetter" class="hidden">
-        <div class="card">
-            <h1 style="font-family: 'Dancing Script', cursive; font-size: 3rem; color: var(--accent-pink);">To My Everything</h1>
-            <div class="letter-paper" id="letterText"></div>
-            <button class="btn" id="btnReasons">100 Reasons Why I Love You ❤️</button>
-        </div>
-    </section>
-
-    <section id="screenReasons" class="hidden">
-        <div class="card">
-            <h1>100 Reasons Why I Love You</h1>
-            <div class="reasons-list" id="reasonsContainer"></div>
-            <button class="btn" id="btnFinal">Forever Promise ♾️</button>
-        </div>
-    </section>
-
-    <section id="screenFinal" class="hidden">
-        <div class="card">
-            <h1 style="font-size: 3rem; margin-bottom: 15px;">♾️</h1>
-            <h1>Forever & Always</h1>
-            <p style="font-size: 1.2rem; margin-top: 15px; color: var(--text-main);">
-                "Every heartbeat of mine belongs to you."
-            </p>
-        </div>
-    </section>
-
-    <script>
-        // DOM Navigation Elements
-        const screens = {
-            puzzle: document.getElementById('screenPuzzle'),
-            overlay: document.getElementById('completionOverlay'),
-            question: document.getElementById('screenQuestion'),
-            timer: document.getElementById('screenTimer'),
-            letter: document.getElementById('screenLetter'),
-            reasons: document.getElementById('screenReasons'),
-            final: document.getElementById('screenFinal')
-        };
-
-        const bgMusic = document.getElementById('bgMusic');
-
-        function navigate(from, to) {
-            from.classList.add('hidden');
-            to.classList.remove('hidden');
-        }
-
-        // 1. Puzzle Logic & Audio Trigger
-        document.getElementById('btnAssemble').addEventListener('click', () => {
-            // Play background audio
-            bgMusic.volume = 0.5;
-            bgMusic.play().catch(e => console.log('Audio autoplay handled', e));
-
-            const frame = document.getElementById('heartFrame');
-            frame.innerHTML = '💖';
-            frame.classList.add('complete');
-
-            setTimeout(() => {
-                screens.overlay.classList.remove('hidden');
-                setTimeout(() => {
-                    screens.overlay.classList.add('hidden');
-                    navigate(screens.puzzle, screens.question);
-                }, 3200);
-            }, 800);
-        });
-
-        // 2. Runaway "NO" Button Logic
-        const btnNo = document.getElementById('btnNo');
-        const moveNo = () => {
-            const x = Math.random() * (window.innerWidth - 120);
-            const y = Math.random() * (window.innerHeight - 60);
-            btnNo.style.position = 'fixed';
-            btnNo.style.left = `${x}px`;
-            btnNo.style.top = `${y}px`;
-        };
-        btnNo.addEventListener('mouseover', moveNo);
-        btnNo.addEventListener('touchstart', moveNo);
-
-        document.getElementById('btnYes').addEventListener('click', () => {
-            navigate(screens.question, screens.timer);
-            startLiveTimer();
-        });
-
-        // 3. Live Counter
-        function startLiveTimer() {
-            const startDate = new Date("February 10, 2023 00:00:00").getTime();
-            setInterval(() => {
-                const now = new Date().getTime();
-                const diff = now - startDate;
-                if (diff < 0) return;
-
-                document.getElementById('years').innerText = Math.floor(diff / (1000 * 60 * 60 * 24 * 365.25));
-                document.getElementById('months').innerText = Math.floor((diff % (1000 * 60 * 60 * 24 * 365.25)) / (1000 * 60 * 60 * 24 * 30.44));
-                document.getElementById('days').innerText = Math.floor((diff % (1000 * 60 * 60 * 24 * 30.44)) / (1000 * 60 * 60 * 24));
-                document.getElementById('hours').innerText = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                document.getElementById('minutes').innerText = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-                document.getElementById('seconds').innerText = Math.floor((diff % (1000 * 60)) / 1000);
-            }, 1000);
-        }
-
-        // 4. Typewriter Deep Love Letter
-        const letterContent = `My Dearest Love,
-
-When I reflect on our story, my heart fills with a warmth that words can barely hold. What began as a simple, unexpected friendship grew quietly into the deepest, most sacred love of my life. I never saw it coming, yet looking back now, loving you feels like the most natural, expected destination my soul was always meant to find.
-
-Every single step of our journey together has been incredible. You possess a character so rare and beautiful—a pure soul filled with kindness, dignity, and grace. Your loyalty to me is unwavering, a quiet strength that gives me absolute peace in a chaotic world. 
-
-Beyond everything, it is your caring heart that leaves me in awe every single day. After my own mother, you are the only person who has ever cared for me with such selfless warmth, protective affection, and motherly gentleness. You look out for me, shield me from worries, comfort my doubts, and care for my well-being in a way that heals parts of me I didn't even know needed healing.
-
-In you, I found my best friend, my motherly warmth, my anchor, and my eternal love. Thank you for being yourself, for staying loyal, and for wrapping my life in your love.
-
-Forever and always, yours. ❤️`;
-
-        document.getElementById('btnOpenLetter').addEventListener('click', () => {
-            navigate(screens.timer, screens.letter);
-            let idx = 0;
-            const target = document.getElementById('letterText');
-            target.innerHTML = '';
-            function type() {
-                if (idx < letterContent.length) {
-                    target.innerHTML += letterContent.charAt(idx);
-                    idx++;
-                    setTimeout(type, 20);
-                }
-            }
-            type();
-        });
-
-        // 5. 100 Reasons Population
-        const reasons = [
-            "Your warm, beautiful smile that brightens up my darkest days.",
-            "How safe and complete I feel whenever I'm with you.",
-            "Your deeply caring and protective nature.",
-            "How you guide and care for me like a mother after my mother.",
-            "The incredible character and values you uphold every day.",
-            "Your unwavering loyalty to us.",
-            "How our unexpected friendship grew into my greatest love.",
-            "Your sweet and comforting voice that calms my heart.",
-            "How you remember every little detail about my preferences.",
-            "Your endless patience and gentle kindness.",
-            "The way you look at me like I'm your whole world.",
-            "How effortlessly you make me want to be a better person.",
-            "Your unconditional support for my dreams and ambitions.",
-            "The peace I feel just sitting in silence next to you.",
-            "How you cheer me up when life gets overwhelming.",
-            "Your gentle touch that always reassures me.",
-            "The adorable little habits you have when you're focused.",
-            "Your incredible strength and emotional wisdom.",
-            "The warm hugs that feel like coming home.",
-            "How deeply you love and protect those close to your heart.",
-            "The beautiful memories we've built together.",
-            "Your honest and forgiving heart.",
-            "How you hold my hand tightly when we walk.",
-            "The way you celebrate my happiness as your own.",
-            "How you fix my bad mood with just a simple look.",
-            "Your unique perspective on life that always inspires me.",
-            "How genuinely interested you are in my day.",
-            "The cozy feeling of being wrapped in your presence.",
-            "Your endless kindness toward everyone around you.",
-            "How every moment with you feels like a blessing."
-        ];
-
-        document.getElementById('btnReasons').addEventListener('click', () => {
-            navigate(screens.letter, screens.reasons);
-            const container = document.getElementById('reasonsContainer');
-            container.innerHTML = '';
-            reasons.forEach((r, i) => {
-                container.innerHTML += `<p><strong>${i + 1}.</strong> ${r}</p>`;
-            });
-        });
-
-        document.getElementById('btnFinal').addEventListener('click', () => {
-            navigate(screens.reasons, screens.final);
-        });
-    </script>
-</body>
-    </html>
+        .reason-item {
+            padding: 12px 15px;
+            border-bottom: 1px
